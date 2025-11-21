@@ -15,21 +15,21 @@ export const Hero: React.FC = () => {
         {/* Label */}
         <div className="mb-8 flex items-center gap-4">
           <div className="h-px w-12 bg-white"></div>
-          <span className="font-mono text-[10px] md:text-xs uppercase tracking-widest text-white/80">Systèmes Logiprêt Inc. &copy; 2025</span>
+          <span className="font-mono text-[10px] md:text-xs uppercase tracking-widest text-white/80">Logiprêt Inc. &copy; 2025</span>
         </div>
 
         {/* Main Headline */}
         <h1 className="text-[2.5rem] leading-[0.9] sm:text-5xl md:text-8xl lg:text-9xl font-bold tracking-tighter md:leading-[0.85] text-white mb-12 uppercase">
-          INFRASTRUCTURE<br />
-          D'ACCÉLÉRATION<br />
-          <span className="text-black drop-shadow-[0_0_15px_rgba(255,255,255,0.5)]">IMMOBILIÈRE</span>
+          La croissance<br />  
+          des courtiers,<br />
+          <span className="text-black drop-shadow-[0_0_15px_rgba(0,0,0,0.2)]">industrialisée.</span>
         </h1>
 
         {/* Subtext & CTA */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8 border-t border-white pt-8">
           <div className="md:col-span-5 lg:col-span-5">
             <p className="text-base sm:text-lg md:text-2xl font-medium leading-snug md:leading-tight text-white/90">
-              Nous concevons les moteurs qui propulsent les courtiers hypothécaires et les équipes immobilières les plus performants du Canada.
+              Nous déployons des systèmes mesurables qui génèrent de la demande, structurent vos ventes et maximisent votre territoire.
             </p>
           </div>
           <div className="md:col-span-7 lg:col-span-7 flex flex-col md:flex-row items-end md:items-center justify-end gap-6">

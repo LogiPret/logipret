@@ -7,21 +7,21 @@ const offerings = [
     title: "MARKETING",
     icon: Megaphone,
     summary: "AUTORITÉ OMNICANALE",
-    description: "Nous ne publions pas simplement des publicités ; nous façonnons la perception du marché. Grâce à des campagnes à haute fréquence alignées sur votre marque, nous positionnons votre courtage comme l'autorité incontestée de votre territoire."
+    description: "Nous ne faisons pas seulement de la publicité : nous construisons des marques dominantes. Au moyen de campagnes à haute fréquence, d’un branding cohérent et de narratifs stratégiques, nous positionnons votre courtage comme la référence incontestable de votre territoire. Notre objectif : que la valeur perçue précède la rencontre."
   },
   {
     id: '02',
     title: "GÉNÉRATION DE LEADS",
     icon: Users,
     summary: "ACQUISITION À HAUTE INTENTION",
-    description: "Le volume est une vanité ; l'intention est la réalité. En utilisant des algorithmes propriétaires et des filtres démographiques spécifiques au marché immobilier canadien, nous isolons les acheteurs et vendeurs prêts à passer à l'action."
+    description: "Nous créons des systèmes d’acquisition qui génèrent des demandes qualifiées à volume constant, sans dépendre d’une seule plateforme. Publicité, contenu, porte à porte, ciblage dynamique, segmentation d’intérêt : chaque contact est dirigé vers la bonne offre, au bon moment."
   },
   {
     id: '03',
     title: "COACHING / FORMATION",
     icon: TrendingUp,
     summary: "ARCHITECTURE DE CONVERSION",
-    description: "Générer un lead n'est que la moitié de la bataille. Nous installons des cadres de négociation éprouvés, des scripts psychologiques et des protocoles de gestion des objections pour transformer vos agents en experts de la conversion."
+    description: "Nous ne “motiverons” pas votre équipe. Nous la rendons prévisible et rentable. Grâce à des méthodes structurées, des scripts évolutifs, et un système de suivi basé sur les chiffres, nous transformons vos courtiers en véritables opérateurs commerciaux."
   }
 ];
 

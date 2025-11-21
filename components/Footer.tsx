@@ -5,8 +5,13 @@ export const Footer: React.FC = () => {
     <footer className="bg-transparent text-white py-12 px-6 border-t border-white/20 backdrop-blur-sm">
       <div className="max-w-[1800px] mx-auto flex flex-col md:flex-row justify-between items-end gap-8">
         
-        <div className="flex flex-col gap-2">
-           <h3 className="text-2xl font-black uppercase tracking-tighter">Logiprêt</h3>
+        <div className="flex flex-col gap-4">
+           <img 
+             src="/logipret_logo_transparent.png" 
+             alt="Logiprêt Logo" 
+             className="h-12 w-auto object-contain"
+             style={{ imageRendering: 'crisp-edges' }}
+           />
            <p className="font-mono text-xs max-w-xs text-white/60">
              INFRASTRUCTURE MARKETING AVANCÉE POUR LES PROFESSIONNELS DE L'IMMOBILIER CANADIEN.
            </p>
