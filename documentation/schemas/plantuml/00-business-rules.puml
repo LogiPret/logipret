@@ -1,0 +1,32 @@
+@startuml Business_Rules
+
+!theme plain
+skinparam backgroundColor #FEFEFE
+skinparam noteBackgroundColor #FFF3E0
+
+title logipret - Business Rules Reference
+footer THESE RULES ARE LAW - Do not bypass without updating this diagram
+
+legend left
+  |= Category |= Rule ID |= Rule Description |= Enforced By |
+  | Security | SEC-001 | Users see only their own data | DB: RLS policy |
+  | Security | SEC-002 | Admins see all data | DB: RLS policy |
+  | Security | SEC-003 | Service role key is server-only | Code review |
+  | Data | DAT-001 | All changes logged to audit table | DB: trigger |
+  | Migration | MIG-001 | All DB changes = migration file | Supabase CLI |
+  | Migration | MIG-002 | Never edit applied migrations | Breaks history |
+  | Migration | MIG-003 | Test on branch before main | Supabase branching |
+  | Process | GOV-001 | Update diagram BEFORE code | Code review |
+  | Process | GOV-002 | Every rule needs unique ID | This document |
+endlegend
+
+note bottom
+  **HOW TO ADD A NEW RULE:**
+  1. Add to this diagram with unique ID
+  2. Document enforcement mechanism
+  3. Implement enforcement in code/DB
+  4. Update .github/copilot-instructions.md
+  5. Add to PR checklist
+end note
+
+@enduml

@@ -1,0 +1,45 @@
+@startuml Governance_Process
+
+!theme plain
+title Development Governance Process
+
+|Developer|
+start
+:Receive feature request;
+
+:Check if it affects business logic;
+
+if (Affects logic?) then (yes)
+  |PlantUML|
+  :Open relevant .puml diagram;
+  :Add/modify rules with IDs;
+  :Commit diagram changes;
+  
+  |Developer|
+  :Implement code matching diagram;
+else (no)
+  :Implement directly;
+endif
+
+|Developer|
+:Run lint + typecheck;
+:Create PR;
+
+|Reviewer|
+:Check diagram matches code;
+:Verify rule IDs exist;
+:Approve or request changes;
+
+|Developer|
+:Merge to main;
+stop
+
+note right
+  **Key Checkpoints:**
+  - Diagram updated before code
+  - Rule IDs are unique
+  - Enforcement mechanism documented
+  - Migration file if DB changes
+end note
+
+@enduml

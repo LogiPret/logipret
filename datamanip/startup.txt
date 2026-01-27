@@ -1,0 +1,55 @@
+================================================================================
+PROJECT: logipret
+Upgraded: 2026-01-26
+================================================================================
+
+## What This Project Does
+<!-- Describe the purpose of this application -->
+
+
+## Domain Context
+<!-- Business domain, key concepts, terminology -->
+
+
+## Users / Roles
+<!-- Who uses this app and what can they do -->
+- Admin: Full access, manage all data
+- User: Access own data only
+
+
+## Key Entities / Data Model
+<!-- Main database tables and relationships -->
+
+
+## Business Rules
+<!-- High-level rules - detailed rules go in 00-business-rules.puml -->
+
+
+## Integrations
+<!-- External services, APIs, webhooks -->
+
+
+## Current Status
+<!-- What's done, what's in progress -->
+
+
+## Next Steps
+<!-- Priority features to implement -->
+
+
+================================================================================
+NOTES FOR AI ASSISTANT
+================================================================================
+
+When working on this project:
+
+1. **Always check** /documentation/schemas/plantuml/ before implementing logic
+2. **Follow rule IDs** strictly - they are law
+3. **Create migrations** for ANY database changes (never direct SQL)
+4. **Update diagrams** when adding/changing business logic
+5. **Read this file** for domain context before major changes
+
+Key governance:
+- GOV-001: Diagram before code
+- MIG-001: All DB changes via migrations
+- SEC-001: RLS for data isolation
