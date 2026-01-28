@@ -11,11 +11,11 @@ export default function LogitextPage() {
 
       {/* Hero Section */}
       <section className="relative pt-32 pb-20 md:pt-48 md:pb-32 overflow-hidden">
-        {/* Background Effects */}
-        <div className="absolute top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
-          <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-logitext-primary/20 rounded-full blur-[120px]" />
-          <div className="absolute top-[20%] right-[-10%] w-[40%] h-[60%] bg-logitext-purple/20 rounded-full blur-[120px]" />
-          <div className="absolute bottom-0 left-[20%] w-[60%] h-[30%] bg-blue-500/10 rounded-full blur-[100px]" />
+        {/* Background Effects - Optimized for mobile with reduced blur and GPU acceleration */}
+        <div className="absolute top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none will-change-transform">
+          <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-logitext-primary/20 rounded-full blur-[40px] md:blur-[120px] will-change-transform" />
+          <div className="absolute top-[20%] right-[-10%] w-[40%] h-[60%] bg-logitext-purple/20 rounded-full blur-[40px] md:blur-[120px] will-change-transform" />
+          <div className="absolute bottom-0 left-[20%] w-[60%] h-[30%] bg-blue-500/10 rounded-full blur-[30px] md:blur-[100px] will-change-transform" />
         </div>
 
         <div className="max-w-7xl mx-auto px-4 md:px-12 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
@@ -66,7 +66,7 @@ export default function LogitextPage() {
 
           {/* Right App Preview - Stickyish */}
           <div className="relative z-10 lg:h-[600px] flex items-center justify-center">
-            <div className="absolute inset-0 bg-gradient-to-b from-logitext-primary/10 to-transparent blur-3xl -z-10" />
+            <div className="absolute inset-0 bg-gradient-to-b from-logitext-primary/10 to-transparent blur-xl md:blur-3xl -z-10 will-change-transform" />
             <AppPreview className="w-full max-w-lg transform rotate-[-5deg] hover:rotate-0 transition-transform duration-500 ease-out" />
           </div>
         </div>

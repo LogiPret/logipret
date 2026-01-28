@@ -148,8 +148,8 @@ export const HowItWorks = () => {
           {/* Right: Sticky Preview */}
           <div className="hidden lg:flex sticky top-0 h-screen items-center justify-center">
             <div className="relative w-full">
-              {/* Glow effect behind the preview */}
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-blue-500/10 blur-[100px] -z-10 rounded-full" />
+              {/* Glow effect behind the preview - GPU accelerated */}
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-blue-500/10 blur-[40px] md:blur-[100px] -z-10 rounded-full will-change-transform" />
 
               <AppPreview
                 step={activeStep}
