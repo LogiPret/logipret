@@ -16,6 +16,15 @@ module.exports = {
           dark: "#000000",
           gray: "#F3F4F6",
         },
+        logitext: {
+          primary: "#0A84FF",
+          purple: "#5e5ce6",
+          success: "#30D158",
+          warning: "#FF9F0A",
+          error: "#FF453A",
+          bg: "#020617", // Changed to dark blue (slate-950)
+          surface: "#0f172a", // Changed to slate-900
+        },
       },
       animation: {
         "fade-in": "fadeIn 0.5s ease-out forwards",

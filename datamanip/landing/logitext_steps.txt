@@ -1,0 +1,704 @@
+================================================================================
+LOGITEXT - DETAILED UI SCREENS REFERENCE
+================================================================================
+
+This document describes EVERY screen in the LogiText app flow, from initial
+loading to campaign completion. Use this to understand exactly how each step
+looks and functions.
+
+================================================================================
+GLOBAL UI STRUCTURE
+================================================================================
+
+The app uses a card-based, single-page layout with screen switching.
+All screens share:
+- Dark theme (bg: #1c1c1e, cards: #2c2c2e)
+- Accent color: #007AFF (iOS blue)
+- Success: #30D158 (green), Error: #FF453A (red), Warning: #FF9F0A (orange)
+- Rounded corners on everything (12-16px radius)
+- Smooth fade-in animations when switching screens
+- Bilingual support (FR/EN toggle in top-right corner)
+
+HEADER (always visible):
+┌─────────────────────────────────────────────────────────────────┐
+│  [Logo]  LogiText                           v2.4.48   FR | EN  │
+│          by LogiPrêt Inc.                                       │
+└─────────────────────────────────────────────────────────────────┘
+
+
+================================================================================
+SCREEN 0: LOADING SCREEN
+================================================================================
+
+PURPOSE: Shown briefly while the app verifies authorization.
+
+VISUAL:
+┌─────────────────────────────────────────────────────────────────┐
+│                                                                 │
+│                         ⟳ (spinner)                            │
+│                                                                 │
+│                    "Vérification..."                           │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+
+ELEMENTS:
+- Centered spinning loader (CSS animation)
+- Muted text below spinner
+- Card has extra padding (50px)
+
+DURATION: 1-2 seconds typically
+
+NEXT: Goes to Activation Screen (if no license) or Step 1 (if licensed)
+
+
+================================================================================
+SCREEN 0B: ACTIVATION SCREEN
+================================================================================
+
+PURPOSE: License activation for new users. Only shown if app isn't activated.
+
+VISUAL:
+┌─────────────────────────────────────────────────────────────────┐
+│                                                                 │
+│   Activer votre licence                                         │
+│                                                                 │
+│   Entrez votre code d'activation pour débloquer LogiText.      │
+│                                                                 │
+│   Code d'activation                                             │
+│   ┌─────────────────────────────────────────────────────────┐  │
+│   │               XXXX-XXXX-XXXX-XXXX                       │  │
+│   └─────────────────────────────────────────────────────────┘  │
+│                                                                 │
+│   ┌─────────────────────────────────────────────────────────┐  │
+│   │                      Activer                            │  │
+│   └─────────────────────────────────────────────────────────┘  │
+│                                                                 │
+│   ┌─ ERROR (hidden by default) ─────────────────────────────┐  │
+│   │ ⚠ Échec de l'activation                                 │  │
+│   │   Code invalide ou expiré.                              │  │
+│   └─────────────────────────────────────────────────────────┘  │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+
+ELEMENTS:
+- Title: "Activer votre licence"
+- Description text in muted color
+- Input field with monospace font, centered text, letter-spacing for code
+- Full-width blue "Activer" button
+- Error alert (red background) appears if activation fails
+
+INPUT FIELD STYLING:
+- Monospace font (SF Mono)
+- Font size: 18px
+- Text centered
+- Letter spacing: 2px
+- Placeholder: "Entrez votre code"
+
+NEXT: On success -> Step 1
+
+
+================================================================================
+SCREEN 1: SELECT CONTACTS (CSV Selection)
+================================================================================
+
+PURPOSE: User selects their CSV file containing contacts.
+
+VISUAL:
+┌─────────────────────────────────────────────────────────────────┐
+│                                                                 │
+│   ① Sélectionnez vos contacts                                  │
+│                                                                 │
+│   ┌─────────────────────────────────────────────────────────┐  │
+│   │                                                         │  │
+│   │                        📁                               │  │
+│   │                                                         │  │
+│   │    Glissez votre fichier CSV ici                       │  │
+│   │    ou cliquez pour parcourir                           │  │
+│   │                                                         │  │
+│   └─────────────────────────────────────────────────────────┘  │
+│                                                                 │
+│   Fichiers récents :                                           │
+│   ┌─────────────────────────────────────────────────────────┐  │
+│   │ 📄 clients_janvier.csv              il y a 2 heures  ✕ │  │
+│   │ 📄 contacts_vip.csv                 hier              ✕ │  │
+│   │ 📄 leads_december.csv               il y a 3 jours    ✕ │  │
+│   └─────────────────────────────────────────────────────────┘  │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+
+AFTER FILE IS SELECTED:
+┌─────────────────────────────────────────────────────────────────┐
+│                                                                 │
+│   ① Sélectionnez vos contacts                                  │
+│                                                                 │
+│   ┌─────────────────────────────────────────────────────────┐  │
+│   │                        📁                               │  │
+│   │              clients_janvier.csv                        │  │
+│   └─────────────────────────────────────────────────────────┘  │
+│                                                                 │
+│   ┌─ SUCCESS ALERT ─────────────────────────────────────────┐  │
+│   │ ✓ 247 contacts chargés                                  │  │
+│   └─────────────────────────────────────────────────────────┘  │
+│                                                                 │
+│   ┌─────────────────────────────────────────────────────────┐  │
+│   │                   Continuer →                           │  │
+│   └─────────────────────────────────────────────────────────┘  │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+
+ELEMENTS:
+
+1. STEP INDICATOR:
+   - Circle with "1" inside (step-num class)
+   - Blue background (#007AFF)
+   - White text
+   - Followed by step title
+
+2. FILE DROP ZONE:
+   - Large dashed border area
+   - Border color: rgba(255,255,255,0.1)
+   - Border-radius: 16px
+   - Padding: 50px 30px
+   - Center-aligned content
+   - Folder icon (📁) at 48px size
+   - Instructional text below in muted color
+   - Hover state: border becomes accent blue, slight background tint
+   - Active state: transform scale(0.98)
+
+3. RECENT CSVS SECTION:
+   - Title: "Fichiers récents :"
+   - List of up to 5 recent files
+   - Each item shows: file icon, filename, relative time, delete button
+   - Clicking a recent file loads it
+   - Delete button (✕) appears on hover
+
+4. SUCCESS ALERT (after file loaded):
+   - Green background with green border
+   - Checkmark icon
+   - Shows contact count in accent color
+   - Text: "[count] contacts chargés"
+
+5. CONTINUE BUTTON:
+   - Full-width blue button
+   - Only appears after file is successfully loaded
+   - Text: "Continuer →"
+
+INTERACTIONS:
+- Drag & drop CSV anywhere on drop zone
+- Click to open file picker
+- Click recent file to load it
+- Supported formats: .csv, .txt, .tsv
+
+NEXT: -> Step 2
+
+
+================================================================================
+SCREEN 2: COMPOSE MESSAGE
+================================================================================
+
+PURPOSE: User writes their SMS message with variable placeholders.
+
+VISUAL:
+┌─────────────────────────────────────────────────────────────────┐
+│                                                                 │
+│   ② Rédigez votre message                                      │
+│                                                                 │
+│   Insérer : [Prénom] [Nom] [Entreprise] [Date]                 │
+│                                                                 │
+│   ┌─────────────────────────────────────────────────────────┐  │
+│   │ Votre message                                           │  │
+│   │ ┌─────────────────────────────────────────────────────┐ │  │
+│   │ │                                                     │ │  │
+│   │ │ Bonjour [Prénom], votre rendez-vous du [Date]      │ │  │
+│   │ │ est confirmé. Merci de votre confiance!            │ │  │
+│   │ │                                                     │ │  │
+│   │ │                                                     │ │  │
+│   │ │                                                     │ │  │
+│   │ └─────────────────────────────────────────────────────┘ │  │
+│   └─────────────────────────────────────────────────────────┘  │
+│                                                                 │
+│   ┌─ RECENT MESSAGES ───────────────────────────────────────┐  │
+│   │ Messages récents                                        │  │
+│   │ ┌─────────────────────────────────────────────────────┐ │  │
+│   │ │ "Bonjour [Prénom], votre..."        il y a 1 heure │ │  │
+│   │ │ "Rappel: RDV demain à..."           hier           │ │  │
+│   │ └─────────────────────────────────────────────────────┘ │  │
+│   └─────────────────────────────────────────────────────────┘  │
+│                                                                 │
+│   [← Retour]                                 [Continuer →]     │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+
+ELEMENTS:
+
+1. STEP INDICATOR:
+   - Circle with "2" inside
+   - Same styling as step 1
+
+2. VARIABLE BUTTONS ROW:
+   - Horizontal row of buttons
+   - Label: "Insérer :"
+   - Standard vars: [Prénom] [Nom]
+   - Custom vars appear based on CSV columns (e.g., [Entreprise], [Date])
+   - Button styling:
+     * Gradient background (accent blue to purple)
+     * White text
+     * Rounded (8px)
+     * Hover: slight lift (translateY -1px)
+   - Clicking inserts variable at cursor position
+
+3. MESSAGE EDITOR:
+   - Rich text editor (contenteditable div)
+   - Dark background (#1c1c1e)
+   - Rounded corners (12px)
+   - Min height: 180px
+   - Padding: 16px
+   - Font size: 15px
+   - Line height: 1.6
+   - VARIABLE STYLING IN EDITOR:
+     * Variables appear as styled pills/chips
+     * Background: accent color (semi-transparent)
+     * Border-radius: 4px
+     * Padding: 2px 6px
+     * Font-weight: 600
+   - Placeholder text when empty
+
+4. RECENT MESSAGES SECTION:
+   - Sidebar on right (or below on mobile)
+   - Title: "Messages récents"
+   - List of up to 5 recent messages
+   - Truncated preview + relative time
+   - Click to insert entire message
+   - Empty state: "Aucun message récent"
+
+5. NAVIGATION BUTTONS:
+   - Two buttons side by side (flexbox)
+   - Left: "← Retour" (secondary/gray button)
+   - Right: "Continuer →" (primary/blue button)
+   - Continue is DISABLED until message is not empty
+
+VARIABLE CHIP EXAMPLE:
+When user types or inserts a variable, it displays as:
+  ┌──────────┐
+  │ [Prénom] │  <- Blue pill with white text
+  └──────────┘
+
+NEXT: -> Step 3
+
+
+================================================================================
+SCREEN 3: SELECT RECIPIENTS (CRM-Style Table)
+================================================================================
+
+PURPOSE: Review contacts, select which ones to send to, edit if needed.
+
+VISUAL:
+┌─────────────────────────────────────────────────────────────────┐
+│                                                                 │
+│   ③ Sélectionnez les destinataires                             │
+│                                                                 │
+│   ┌─ TOOLBAR ───────────────────────────────────────────────┐  │
+│   │ [🔍 Rechercher...] [Valides ✓] [Invalides] [Suspects]   │  │
+│   │                                                          │  │
+│   │ Sélection: [Tout] [Aucun]    [✎ Éditer]    47/52 sél.  │  │
+│   └─────────────────────────────────────────────────────────┘  │
+│                                                                 │
+│   ┌─ CRM TABLE ─────────────────────────────────────────────┐  │
+│   │ ☐  #   ●  Prénom      Nom        Téléphone    Entreprise│  │
+│   ├─────────────────────────────────────────────────────────┤  │
+│   │ ☑  1   ✓  Jean        Tremblay   514-555-1234  Acme Inc │  │
+│   │ ☑  2   ✓  Marie       Lavoie     438-555-5678  Tech Co  │  │
+│   │ ☑  3   ✓  Pierre      Martin     514-555-9999  StartUp  │  │
+│   │ ☐  4   ✗  Robert      (vide)     N/A           LogiPrêt │  │
+│   │ ☑  5   !  François    Dubois     514-555-0000  Test Ltd │  │
+│   │ ☑  6   ✓  Sophie      Gagnon     438-555-1111  Corp XYZ │  │
+│   │ ...                                                      │  │
+│   └─────────────────────────────────────────────────────────┘  │
+│                                                                 │
+│   ✓ Valide   ✗ Variable manquante   ✗ Invalide   ! Suspect    │
+│                                      Shift+clic pour sélection │
+│                                                                 │
+│   [← Retour]                        [📤 Envoyer (47)]          │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+
+ELEMENTS:
+
+1. STEP INDICATOR:
+   - Circle with "3" inside
+
+2. TOOLBAR:
+   - Search box: rounded, dark bg, placeholder "Rechercher..."
+   - Filter buttons:
+     * [Valides] - green accent when active, shows valid contacts
+     * [Invalides] - red badge with count if any
+     * [Suspects] - orange badge with count if any
+   - Selection controls: [Tout] [Aucun] buttons
+   - Edit mode button: [✎ Éditer] toggles inline editing
+   - Selection counter: "47 / 52 sélectionnés"
+
+3. CRM TABLE:
+   - Full-width scrollable table
+   - Sticky header row
+   - Columns:
+     * Checkbox (for selection)
+     * Row number (#)
+     * Status icon (✓ green, ✗ red, ! orange)
+     * Prénom (First name)
+     * Nom (Last name)
+     * Téléphone (Phone)
+     * Dynamic columns based on CSV (Entreprise, Date, etc.)
+   
+   - ROW STYLING:
+     * Alternating background (subtle)
+     * Hover: slightly lighter background
+     * Selected: has checkmark
+     * Invalid: row appears muted
+   
+   - STATUS ICONS:
+     * ✓ Green: Contact is valid, all variables filled
+     * ✗ Yellow/Orange: Missing a variable used in message
+     * ✗ Red: Invalid contact (no phone, etc.)
+     * ! Orange: Suspicious data (odd characters)
+
+4. LEGEND ROW:
+   - Small text below table
+   - Explains each status icon
+   - Tip: "Shift+clic pour sélection multiple"
+
+5. NAVIGATION BUTTONS:
+   - Left: "← Retour" (secondary)
+   - Right: "📤 Envoyer (47)" (GREEN success button)
+   - Send button shows selected count
+   - DISABLED if no contacts selected
+
+EDIT MODE:
+When "Éditer" is clicked:
+- Cells become editable (click to edit)
+- Save button appears
+- Can modify phone numbers, names, etc.
+- Changes persist to the loaded data
+
+NEXT: -> Confirmation Modal -> Sending Screen
+
+
+================================================================================
+MODAL: SEND CONFIRMATION
+================================================================================
+
+PURPOSE: Final confirmation before sending campaign.
+
+VISUAL:
+┌─────────────────────────────────────────────────────────────────┐
+│                                                                 │
+│ ░░░░░░░░░░░░░░░░░░░ DIMMED BACKGROUND ░░░░░░░░░░░░░░░░░░░░░░░  │
+│                                                                 │
+│     ┌───────────────────────────────────────────────────┐       │
+│     │                                                   │       │
+│     │   Confirmer l'envoi                              │       │
+│     │                                                   │       │
+│     │   Vous êtes sur le point d'envoyer 47 messages.  │       │
+│     │   Cette action ne peut pas être annulée.         │       │
+│     │                                                   │       │
+│     │   Temps estimé: 3 minutes 45 secondes            │       │
+│     │                                                   │       │
+│     │   [Annuler]              [📤 Confirmer]          │       │
+│     │                                                   │       │
+│     └───────────────────────────────────────────────────┘       │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+
+ELEMENTS:
+- Dark overlay with blur effect (backdrop-filter: blur(4px))
+- Centered modal card
+- Animation: scales in from 0.95 to 1
+- Title: "Confirmer l'envoi"
+- Message count in bold
+- Time estimate in separate styled row
+- Two buttons: Cancel (gray), Confirm (green)
+
+TIME ESTIMATE FORMAT:
+- Under 1 min: "45 secondes"
+- 1-60 min: "3 minutes 45 secondes"  
+- Over 1 hour: "1 heure 23 minutes"
+
+NEXT: On confirm -> Sending Screen
+
+
+================================================================================
+SCREEN 4: SENDING IN PROGRESS
+================================================================================
+
+PURPOSE: Shows real-time sending progress with live log.
+
+VISUAL:
+┌─────────────────────────────────────────────────────────────────┐
+│                                                                 │
+│   Envoi en cours...                                            │
+│                                                                 │
+│   ┌─ PROGRESS BAR ──────────────────────────────────────────┐  │
+│   │ ████████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░  │  │
+│   │ 23 / 47                                          49%    │  │
+│   └─────────────────────────────────────────────────────────┘  │
+│                                                                 │
+│   ┌─ LIVE LOG ──────────────────────────────────────────────┐  │
+│   │                                                          │  │
+│   │ 14:32:01  ✓ Jean Tremblay (514-555-1234)                │  │
+│   │ 14:32:05  ✓ Marie Lavoie (438-555-5678)                 │  │
+│   │ 14:32:09  ✓ Pierre Martin (514-555-9999)                │  │
+│   │ 14:32:13  ✗ Robert Gagnon - Numéro invalide             │  │
+│   │ 14:32:17  ✓ François Dubois (514-555-0000)              │  │
+│   │ 14:32:21  ⟳ Sophie Gagnon (438-555-1111)...             │  │
+│   │                                                          │  │
+│   │                                                          │  │
+│   └─────────────────────────────────────────────────────────┘  │
+│                                                                 │
+│   ┌─────────────────────────────────────────────────────────┐  │
+│   │                       ⏸ Pause                           │  │
+│   └─────────────────────────────────────────────────────────┘  │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+
+ELEMENTS:
+
+1. TITLE:
+   - "Envoi en cours..."
+   - When complete, shows green checkmark: "Envoi en cours... ✓"
+
+2. PROGRESS BAR:
+   - Container: dark background, rounded
+   - Fill: gradient from accent blue to purple
+   - Height: 8px
+   - Smooth animation on width change
+   - Below bar:
+     * Left: "23 / 47" (current / total)
+     * Right: "49%" percentage
+
+3. LIVE LOG:
+   - Scrollable container (height: 350px)
+   - Monospace font (SF Mono)
+   - Dark background
+   - Each entry shows:
+     * Timestamp (muted, small)
+     * Status icon (✓ green, ✗ red, ⟳ spinner)
+     * Contact name
+     * Phone number in parentheses
+     * Error message if failed
+   - Auto-scrolls to bottom as new entries arrive
+
+4. PAUSE BUTTON:
+   - Full-width orange/warning button
+   - Text: "⏸ Pause" or "Pause"
+   - Clicking opens Pause Modal
+
+LOG ENTRY STYLING:
+- Success: ✓ in green
+- Failed: ✗ in red, includes error reason
+- In progress: ⟳ spinning icon
+
+NEXT: -> Complete Screen (or Pause Modal)
+
+
+================================================================================
+MODAL: PAUSE
+================================================================================
+
+PURPOSE: Shown when user pauses sending. Allows resume or cancel.
+
+VISUAL:
+┌─────────────────────────────────────────────────────────────────┐
+│                                                                 │
+│ ░░░░░░░░░░░░░░░░░░░ DIMMED BACKGROUND ░░░░░░░░░░░░░░░░░░░░░░░  │
+│                                                                 │
+│     ┌───────────────────────────────────────────────────┐       │
+│     │                                                   │       │
+│     │   Envoi en pause                                 │       │
+│     │                                                   │       │
+│     │   L'envoi est en pause.                          │       │
+│     │                                                   │       │
+│     │   23 / 47 messages envoyés                       │       │
+│     │                                                   │       │
+│     │   [Annuler tout]              [▶ Reprendre]      │       │
+│     │                                                   │       │
+│     └───────────────────────────────────────────────────┘       │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+
+ELEMENTS:
+- Same overlay styling as confirmation modal
+- Title: "Envoi en pause"
+- Progress shown: "23 / 47 messages envoyés"
+- Cancel button (red/danger): abandons remaining
+- Resume button (green/success): continues sending
+
+ACTIONS:
+- Resume -> back to Sending Screen, continues from where paused
+- Cancel -> Complete Screen with partial results
+
+
+================================================================================
+SCREEN 5: CAMPAIGN COMPLETE
+================================================================================
+
+PURPOSE: Final summary showing campaign results.
+
+VISUAL:
+┌─────────────────────────────────────────────────────────────────┐
+│                                                                 │
+│   Campagne terminée!                                           │
+│                                                                 │
+│   ┌───────────────────────────────────────────────────────────┐│
+│   │                                                           ││
+│   │   ┌───────────┐   ┌───────────┐   ┌───────────┐          ││
+│   │   │           │   │           │   │           │          ││
+│   │   │    45     │   │     1     │   │     1     │          ││
+│   │   │           │   │           │   │           │          ││
+│   │   │  Envoyés  │   │  Échoués  │   │  Ignorés  │          ││
+│   │   │  (green)  │   │   (red)   │   │ (orange)  │          ││
+│   │   └───────────┘   └───────────┘   └───────────┘          ││
+│   │                                                           ││
+│   └───────────────────────────────────────────────────────────┘│
+│                                                                 │
+│   [Voir les logs]  [Envoyer logs]  [✕ Fermer]                  │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+
+ELEMENTS:
+
+1. TITLE:
+   - "Campagne terminée!"
+   - Celebratory tone
+
+2. STATS GRID:
+   - 3-column grid layout
+   - Each stat card:
+     * Dark background
+     * Rounded corners (12px)
+     * Centered content
+     * Large number (28px, bold)
+     * Label below (uppercase, muted, 12px)
+   
+   - ENVOYÉS (Sent):
+     * Number in green (#30D158)
+     * Label: "ENVOYÉS"
+   
+   - ÉCHOUÉS (Failed):
+     * Number in red (#FF453A)
+     * Label: "ÉCHOUÉS"
+   
+   - IGNORÉS (Skipped):
+     * Number in orange (#FF9F0A)
+     * Label: "IGNORÉS"
+
+3. ACTION BUTTONS (3 buttons side by side):
+   - "Voir les logs" (secondary/gray) - shows detailed log
+   - "Envoyer logs" (secondary/gray) - emails log file
+   - "✕ Fermer" (primary/blue) - closes the app
+
+BUTTON LAYOUT:
+All three buttons in flex row, equal width
+
+NEXT: App closes or returns to Step 1 for new campaign
+
+
+================================================================================
+MODAL: WARNING (Generic)
+================================================================================
+
+PURPOSE: Reusable warning modal for various scenarios.
+
+VISUAL:
+┌─────────────────────────────────────────────────────────────────┐
+│                                                                 │
+│ ░░░░░░░░░░░░░░░░░░░ DIMMED BACKGROUND ░░░░░░░░░░░░░░░░░░░░░░░  │
+│                                                                 │
+│     ┌───────────────────────────────────────────────────┐       │
+│     │                                                   │       │
+│     │   ⚠️ Attention                                   │       │
+│     │                                                   │       │
+│     │   5 contacts ont des variables manquantes.       │       │
+│     │                                                   │       │
+│     │   ┌─────────────────────────────────────────┐    │       │
+│     │   │ • Jean Dupont - [Date] manquant         │    │       │
+│     │   │ • Marie Test - [Entreprise] manquant   │    │       │
+│     │   │ • Pierre X - [Date] manquant            │    │       │
+│     │   └─────────────────────────────────────────┘    │       │
+│     │                                                   │       │
+│     │   [Désélectionner]        [Envoyer quand même]   │       │
+│     │                                                   │       │
+│     └───────────────────────────────────────────────────┘       │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+
+ELEMENTS:
+- Warning icon (⚠️) in orange
+- Dynamic title
+- Explanation message
+- Scrollable details box (shows affected contacts)
+- Two action buttons with context-dependent labels
+
+USED FOR:
+- Missing variables warning
+- Suspicious characters warning
+- Unsaved changes warning
+- etc.
+
+
+================================================================================
+ANIMATIONS & TRANSITIONS
+================================================================================
+
+1. SCREEN TRANSITIONS:
+   - fadeIn animation (0.3s ease-out)
+   - Scale from 0.98 to 1
+   - Translate from Y+8px to 0
+
+2. BUTTON HOVER:
+   - Transform: translateY(-1px)
+   - Slight opacity change
+
+3. MODAL APPEAR:
+   - modalIn animation (0.2s ease-out)
+   - Scale from 0.95 to 1
+   - Fade from 0 to 1
+
+4. PROGRESS BAR:
+   - Width transition (0.3s)
+   - Gradient shimmer effect
+
+5. SPINNER:
+   - Rotate 360° in 0.8s
+   - Linear timing, infinite loop
+
+
+================================================================================
+COLOR REFERENCE
+================================================================================
+
+--bg-primary: #1c1c1e        (darkest, main background)
+--bg-secondary: #2c2c2e      (card backgrounds)
+--bg-tertiary: #3c3c3e       (input backgrounds, table headers)
+--text-primary: #ffffff       (main text)
+--text-secondary: #8e8e93     (muted text, labels)
+--accent: #007AFF             (iOS blue, primary actions)
+--success: #30D158            (green, success states)
+--error: #FF453A              (red, errors)
+--warning: #FF9F0A            (orange, warnings)
+--border: rgba(255,255,255,0.1)
+
+
+================================================================================
+TYPOGRAPHY
+================================================================================
+
+- Font family: system-ui, -apple-system, BlinkMacSystemFont (SF Pro)
+- Monospace: SF Mono, Monaco, monospace
+- Body: 14px
+- Titles: 18-22px, font-weight 600
+- Labels: 11-12px, uppercase, letter-spacing 0.5px
+- Large numbers: 28px, font-weight 700
+
+
+================================================================================
+END OF DOCUMENT
+================================================================================

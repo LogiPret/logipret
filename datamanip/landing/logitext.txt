@@ -1,0 +1,873 @@
+================================================================================
+LOGITEXT LANDING PAGE - CREATIVE BRIEF FOR AI GENERATION
+================================================================================
+
+PROJECT: Landing page for LogiText - Mass SMS Campaign Manager for Mac
+COMPANY: LogiPrêt Inc.
+TARGET: Small businesses, real estate agents, mortgage brokers, marketing teams
+GOAL: Showcase app, drive conversions (purchase license or book demo)
+
+================================================================================
+SECTION 1: BRAND & DESIGN DIRECTION
+================================================================================
+
+APP NAME: LogiText
+TAGLINE: "Send thousands of personalized SMS in minutes"
+ALTERNATIVE: "Your contacts, your message, one click"
+
+COLOR PALETTE:
+- Primary: #0A84FF (Apple blue) - USE THIS PROMINENTLY
+- Secondary gradient: linear-gradient(135deg, #0A84FF, #5e5ce6)
+- Accent purple: #5e5ce6
+- Success green: #30D158
+- Warning orange: #FF9F0A
+- Error red: #FF453A
+- Dark backgrounds: #0D0D0D, #1C1C1E, #2C2C2E, #3A3A3C
+
+DESIGN PHILOSOPHY:
+- The app UI is dark/gray (professional) but the LANDING PAGE should be VIBRANT
+- Use blue gradients, animated backgrounds, floating elements
+- Think: Apple product launch page meets Stripe's elegant animations
+- Glassmorphism effects, subtle parallax, smooth scroll animations
+- NOT boring - this is a premium product launch, make it feel exciting
+
+TYPOGRAPHY:
+- Clean sans-serif (SF Pro Display, Inter, or similar)
+- Large bold headlines
+- Generous whitespace
+- High contrast for readability
+
+================================================================================
+SECTION 2: PAGE STRUCTURE
+================================================================================
+
+NAVIGATION (Fixed, glassmorphism):
+- Logo (LogiText) left
+- Links: Features | How it Works | Pricing | Coming Soon
+- CTA button: "Get Started" or "Essayer gratuitement"
+- Language toggle: FR/EN
+
+--------------------------------------------------------------------------------
+HERO SECTION
+--------------------------------------------------------------------------------
+LAYOUT: Split - Left side text, right side app preview
+HEADLINE: "Envoyez des milliers de SMS personnalisés en quelques clics"
+SUBHEADLINE: "LogiText transforme votre liste de contacts en campagne SMS 
+              en moins de 5 minutes. Aucune configuration complexe."
+CTA BUTTONS: 
+- Primary: "Télécharger pour Mac" (blue gradient)
+- Secondary: "Voir la démo" (outlined)
+
+BACKGROUND: 
+- Animated gradient mesh (blues, purples, teals)
+- Subtle floating particles or geometric shapes
+- Or: Animated aurora borealis effect in blue tones
+
+RIGHT SIDE - STICKY APP PREVIEW:
+- This is KEY - a mini version of the app that stays visible
+- On hero: Shows the main dashboard/step 1
+- Initial state: File drop zone with "Glissez votre CSV ici"
+- Slight 3D rotation (perspective)
+- Subtle shadow/glow effect
+
+--------------------------------------------------------------------------------
+PROBLEM SECTION
+--------------------------------------------------------------------------------
+HEADLINE: "Le problème avec l'envoi de SMS en masse"
+
+PAIN POINTS (with icons):
+1. "Copier-coller un par un?" 
+   - Hours wasted on manual work
+   
+2. "Services en ligne coûteux?"
+   - Pay per message, hidden fees, subscriptions
+   
+3. "Pas de personnalisation?"
+   - Generic messages = low engagement
+   
+4. "Données envoyées à des tiers?"
+   - Privacy concerns, data sold to advertisers
+
+TRANSITION: "Il existe une meilleure façon..."
+
+VISUAL: Icons or illustrations for each pain point
+The sticky app preview on right could show a sad/error state here
+
+--------------------------------------------------------------------------------
+SOLUTION SECTION - "WHAT LOGITEXT DOES"
+--------------------------------------------------------------------------------
+HEADLINE: "LogiText: Vos SMS, directement depuis votre Mac"
+
+KEY BENEFITS (cards with icons):
+1. "Utilise iMessage natif" 
+   - Messages sent from YOUR phone number via iMessage
+   - No third-party, no API costs
+   
+2. "Personnalisation automatique"
+   - {{prenom}}, {{nom}} and custom variables
+   - Each message feels personal
+   
+3. "100% local et privé"
+   - Your data never leaves your computer
+   - No cloud upload, no tracking
+   
+4. "Interface intuitive"
+   - 3 steps: Import → Compose → Send
+   - No learning curve
+
+5. "Rapide et fiable"
+   - Send 1000+ messages in minutes
+   - Automatic retry on failure
+   - Batch pauses to avoid carrier throttling
+
+VISUAL: Feature cards with subtle hover animations
+Sticky app preview: Could show the compose screen with {{prenom}} variable
+
+--------------------------------------------------------------------------------
+HOW IT WORKS SECTION - INTERACTIVE WALKTHROUGH
+--------------------------------------------------------------------------------
+HEADLINE: "Comment ça marche"
+SUBHEADLINE: "3 étapes simples pour lancer votre campagne"
+
+THIS IS THE INTERACTIVE SECTION - Very important!
+
+CONCEPT:
+- As user scrolls, the sticky app preview on the right CHANGES
+- Each step triggers a different screen in the preview
+- Animations show the app "working" with demo data
+- Users can CLICK on the preview to interact (but it's sandboxed/demo mode)
+
+STEP 1: "Importez vos contacts"
+- Description: "Glissez votre fichier CSV ou Excel. LogiText détecte 
+                automatiquement les colonnes (prénom, nom, téléphone)."
+- App preview shows: 
+  * File drop zone
+  * Animated: File icon drops in
+  * Preview table appears with sample contacts:
+    | Prénom  | Nom      | Téléphone    |
+    | Marie   | Tremblay | 514-555-1234 |
+    | Jean    | Dubois   | 438-555-5678 |
+    | Sophie  | Gagnon   | 450-555-9012 |
+  * Success badge: "156 contacts chargés"
+  
+STEP 2: "Rédigez votre message"
+- Description: "Écrivez votre message et insérez des variables pour 
+                personnaliser automatiquement chaque SMS."
+- App preview shows:
+  * Message editor with variable buttons (Prénom, Nom)
+  * Animated typing: "Bonjour {{prenom}}..."
+  * Message preview showing personalized result:
+    "Bonjour Marie, votre rendez-vous est confirmé pour demain!"
+  * Recent messages panel on right
+  
+STEP 3: "Envoyez!"
+- Description: "Sélectionnez vos destinataires et lancez l'envoi. 
+                Suivez la progression en temps réel."
+- App preview shows:
+  * Contact selection table (CRM style)
+  * Checkboxes, selection count "45/156 sélectionnés"
+  * Then transitions to sending screen:
+    * Progress bar animating
+    * Log entries appearing:
+      ✓ Marie Tremblay - Envoyé
+      ✓ Jean Dubois - Envoyé
+      ✓ Sophie Gagnon - Envoyé
+  * Final: Stats screen with 45 sent, 0 failed
+
+INTERACTIVITY IDEAS:
+- User can click the "Prénom" variable button in preview
+- User can type in the message editor (demo mode)
+- Hover on contacts to highlight
+- Click "Envoyer" shows animation (but doesn't actually send)
+
+--------------------------------------------------------------------------------
+FEATURES DEEP DIVE
+--------------------------------------------------------------------------------
+HEADLINE: "Fonctionnalités puissantes"
+
+FEATURE GRID (2x3 or 3x2):
+
+1. "Détection automatique des colonnes"
+   - Icon: Magic wand or table
+   - Description: CSV avec n'importe quel format? LogiText trouve 
+                  automatiquement les colonnes prénom, nom et téléphone.
+
+2. "Variables personnalisées illimitées"
+   - Icon: {x} or brackets
+   - Description: Utilisez n'importe quelle colonne comme variable. 
+                  {{ville}}, {{montant}}, {{date}}... tout est possible.
+
+3. "Gestion intelligente des téléphones"
+   - Icon: Phone with checkmark
+   - Description: Support multi-téléphone (mobile > travail > domicile), 
+                  validation automatique, formats internationaux.
+
+4. "Historique et templates"
+   - Icon: Clock or history
+   - Description: Retrouvez vos messages récents et fichiers CSV utilisés. 
+                  Réutilisez vos templates en un clic.
+
+5. "Tableau de bord CRM"
+   - Icon: Table/grid
+   - Description: Visualisez tous vos contacts, filtrez par statut valide/invalide, 
+                  sélectionnez avec shift+clic pour sélection multiple.
+
+6. "Logs détaillés"
+   - Icon: Document/list
+   - Description: Suivez chaque message envoyé. En cas de problème, 
+                  envoyez les logs au support en un clic.
+
+--------------------------------------------------------------------------------
+SOCIAL PROOF / TESTIMONIALS (Optional)
+--------------------------------------------------------------------------------
+HEADLINE: "Ils nous font confiance"
+
+TESTIMONIALS:
+- "J'ai économisé 3 heures par semaine depuis que j'utilise LogiText." 
+  - Courtier immobilier, Montréal
+  
+- "Simple, efficace, exactement ce qu'il me fallait pour mes rappels clients."
+  - Courtier hypothécaire, Québec
+
+STATS:
+- "50,000+ messages envoyés"
+- "200+ utilisateurs actifs"
+- "4.9/5 satisfaction"
+
+--------------------------------------------------------------------------------
+COMING SOON SECTION - EXPANSION
+--------------------------------------------------------------------------------
+HEADLINE: "Bientôt disponible partout"
+SUBHEADLINE: "LogiText évolue. Restez à l'écoute."
+
+ROADMAP (Timeline or cards):
+
+1. "LogiText pour iPhone" - BETA
+   - Icon: iPhone mockup
+   - "Envoyez des SMS directement depuis votre iPhone. 
+      Même simplicité, format mobile."
+   - Status: "En développement - Beta privée"
+   - CTA: "Rejoindre la beta"
+
+2. "LogiText pour Android" - COMING 2024
+   - Icon: Android phone mockup
+   - "Support complet pour appareils Android."
+   - Status: "En cours de développement"
+   
+3. "LogiText Web" - COMING 2024
+   - Icon: Browser window
+   - "Accédez à LogiText depuis n'importe quel navigateur. 
+      Synchronisation cloud optionnelle."
+   - Status: "En planification"
+
+VISUAL: 
+- Cards with device mockups
+- Status badges (Beta, Coming Soon, etc.)
+- Timeline or roadmap visualization
+- Sticky app preview could show a mobile mockup or "COMING SOON" overlay
+
+--------------------------------------------------------------------------------
+PRICING / ONBOARDING SECTION
+--------------------------------------------------------------------------------
+HEADLINE: "Prêt à commencer?"
+
+PRICING TIERS (if applicable):
+- Free trial: X days or X messages
+- Pro: $XX/month or one-time purchase
+- Enterprise: Contact for pricing
+
+OR SIMPLER:
+- "Licence unique - Pas d'abonnement"
+- Price displayed prominently
+- "Activation instantanée"
+
+CTA OPTIONS:
+1. "Acheter maintenant" - Primary button → Stripe checkout
+2. "Planifier une démo" - Secondary button → Calendly embed or booking form
+3. "Télécharger l'essai gratuit" - If free trial available
+
+PAYMENT SECTION:
+- Stripe integration for credit card
+- Show payment security badges
+- Money-back guarantee if applicable
+
+BOOKING SECTION:
+- Calendar embed for scheduling demo
+- Or simple contact form:
+  * Name
+  * Email  
+  * Company
+  * Message
+  
+--------------------------------------------------------------------------------
+FOOTER
+--------------------------------------------------------------------------------
+- Logo
+- Links: Features | Pricing | Support | Privacy | Terms
+- Contact email
+- Social links (if any)
+- "Made with ❤️ in Québec by LogiPrêt Inc."
+- Copyright
+
+================================================================================
+SECTION 3: STICKY APP PREVIEW - TECHNICAL SPEC
+================================================================================
+
+CONCEPT:
+A floating, interactive mini-version of the app that stays on the right side
+of the screen and changes content based on scroll position.
+
+BEHAVIOR:
+1. Fixed position on right side (not centered, offset from edge)
+2. Slightly rotated for 3D effect (perspective: 1000px, rotateY: -5deg)
+3. Subtle shadow and glow effect
+4. Smooth transitions when content changes
+5. Responsive: Hides or shrinks on mobile/tablet
+
+SCROLL TRIGGERS (example scroll percentages):
+- 0-15%: Hero → Default/Welcome screen
+- 15-30%: Problem section → Empty state or error state
+- 30-50%: Solution section → Step 1 (file drop)
+- 50-65%: How it works Step 1 → Interactive file import demo
+- 65-75%: How it works Step 2 → Message composer with variables
+- 75-85%: How it works Step 3 → CRM table + sending animation
+- 85-95%: Features section → Random feature highlights
+- 95-100%: CTA section → "Get Started" encouragement
+
+SIZE:
+- Desktop: ~400px wide, auto height (maybe 500-600px)
+- Tablet: Smaller or hidden
+- Mobile: Hidden (show inline screenshots instead)
+
+INTERACTIVITY:
+- Buttons are clickable (show hover states, animations)
+- Can type in text fields (demo mode)
+- Checkboxes toggle
+- Nothing actually sends - all sandboxed
+
+================================================================================
+SECTION 4: UI CODE SNIPPETS FOR INTERACTIVE PREVIEW
+================================================================================
+
+Below are actual CSS and HTML from the LogiText app. Use these to create
+an authentic-looking interactive preview for the landing page.
+
+--- CSS VARIABLES (Dark theme) ---
+
+:root {
+    --bg-primary: #0D0D0D;
+    --bg-secondary: #1C1C1E;
+    --bg-tertiary: #2C2C2E;
+    --bg-card: #1C1C1E;
+    --text-primary: #FFFFFF;
+    --text-secondary: #8E8E93;
+    --accent: #0A84FF;
+    --accent-hover: #0071E3;
+    --success: #30D158;
+    --warning: #FF9F0A;
+    --error: #FF453A;
+    --border: #3A3A3C;
+}
+
+--- CARD COMPONENT ---
+
+.card {
+    background: var(--bg-card);
+    border-radius: 16px;
+    padding: 24px;
+    border: 1px solid var(--border);
+}
+
+.card-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.step-num {
+    width: 28px;
+    height: 28px;
+    background: linear-gradient(135deg, var(--accent), #5e5ce6);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+--- BUTTON STYLES ---
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 14px 28px;
+    font-size: 16px;
+    font-weight: 600;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-primary { 
+    background: var(--accent); 
+    color: white; 
+}
+.btn-primary:hover { 
+    background: var(--accent-hover); 
+}
+
+.btn-success { 
+    background: var(--success); 
+    color: white; 
+}
+
+.btn-secondary { 
+    background: var(--bg-tertiary); 
+    color: var(--text-primary); 
+    border: 1px solid var(--border); 
+}
+
+--- VARIABLE BUTTONS ---
+
+.var-btn {
+    padding: 8px 14px;
+    background: linear-gradient(135deg, var(--accent), #5e5ce6);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.var-btn:hover { 
+    transform: translateY(-1px); 
+    opacity: 0.9; 
+}
+
+--- FILE DROP ZONE ---
+
+.file-input-wrapper {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 20px;
+    border: 2px dashed var(--border);
+    border-radius: 16px;
+    background: var(--bg-tertiary);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.file-input-wrapper:hover { 
+    border-color: var(--accent); 
+    background: rgba(10, 132, 255, 0.1); 
+}
+
+.file-input-wrapper.has-file { 
+    border-color: var(--success); 
+    background: rgba(48, 209, 88, 0.1); 
+}
+
+.file-icon { 
+    font-size: 48px; 
+    margin-bottom: 12px; 
+}
+
+.file-text { 
+    color: var(--text-secondary); 
+    font-size: 14px; 
+}
+
+--- MESSAGE EDITOR ---
+
+.rich-message-editor {
+    min-height: 100px;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px;
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--text-primary);
+    outline: none;
+}
+
+.rich-message-editor:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(10, 132, 255, 0.2);
+}
+
+/* Variable tag inside editor */
+.var-tag {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--accent), #5e5ce6);
+    color: white;
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    margin: 0 2px;
+}
+
+--- PROGRESS BAR ---
+
+.progress-container { 
+    margin: 24px 0; 
+}
+
+.progress-bar { 
+    height: 8px; 
+    background: var(--bg-tertiary); 
+    border-radius: 4px; 
+    overflow: hidden; 
+}
+
+.progress-fill { 
+    height: 100%; 
+    background: linear-gradient(90deg, var(--accent), #5e5ce6); 
+    border-radius: 4px; 
+    transition: width 0.3s; 
+}
+
+--- CONTACTS TABLE (CRM Style) ---
+
+.crm-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+.crm-table th, 
+.crm-table td {
+    padding: 10px 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+}
+
+.crm-table th {
+    background: var(--bg-tertiary);
+    color: var(--text-secondary);
+    font-weight: 600;
+    font-size: 11px;
+    text-transform: uppercase;
+    position: sticky;
+    top: 0;
+}
+
+.crm-table tr:hover {
+    background: rgba(10, 132, 255, 0.1);
+}
+
+--- LOG ENTRIES ---
+
+.log-container {
+    height: 200px;
+    overflow-y: auto;
+    background: var(--bg-tertiary);
+    border-radius: 12px;
+    padding: 12px;
+    font-family: 'SF Mono', Monaco, monospace;
+    font-size: 12px;
+}
+
+.log-entry { 
+    padding: 6px 0; 
+    border-bottom: 1px solid var(--border); 
+    display: flex; 
+    align-items: flex-start; 
+    gap: 8px; 
+}
+
+.log-time { 
+    color: var(--text-secondary); 
+    font-size: 10px; 
+}
+
+--- STATS CARDS ---
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+}
+
+.stat-item {
+    text-align: center;
+    padding: 16px;
+    background: var(--bg-tertiary);
+    border-radius: 12px;
+}
+
+.stat-value { 
+    font-size: 28px; 
+    font-weight: 700; 
+    margin-bottom: 4px; 
+}
+.stat-value.success { color: var(--success); }
+.stat-value.error { color: var(--error); }
+
+.stat-label { 
+    font-size: 12px; 
+    color: var(--text-secondary); 
+    text-transform: uppercase; 
+}
+
+--- DASHBOARD STATS (Valid/Skipped) ---
+
+.dashboard-stats {
+    display: flex;
+    gap: 12px;
+}
+
+.dashboard-stat {
+    flex: 1;
+    padding: 16px;
+    border-radius: 12px;
+    text-align: center;
+}
+
+.dashboard-stat.valid {
+    background: rgba(48, 209, 88, 0.15);
+    border: 1px solid var(--success);
+}
+
+.dashboard-stat.skipped {
+    background: rgba(255, 69, 58, 0.15);
+    border: 1px solid var(--error);
+}
+
+.dashboard-stat .num {
+    font-size: 28px;
+    font-weight: 700;
+}
+
+--- ALERT BOXES ---
+
+.alert { 
+    padding: 14px; 
+    border-radius: 12px; 
+    display: flex; 
+    align-items: flex-start; 
+    gap: 10px; 
+}
+
+.alert-success { 
+    background: rgba(48, 209, 88, 0.15); 
+    border: 1px solid rgba(48, 209, 88, 0.3); 
+}
+
+.alert-error { 
+    background: rgba(255, 69, 58, 0.15); 
+    border: 1px solid rgba(255, 69, 58, 0.3); 
+}
+
+--- ANIMATIONS ---
+
+@keyframes fadeIn { 
+    from { 
+        opacity: 0; 
+        transform: scale(0.98) translateY(8px); 
+    } 
+    to { 
+        opacity: 1; 
+        transform: scale(1) translateY(0); 
+    } 
+}
+
+@keyframes spin { 
+    to { transform: rotate(360deg); } 
+}
+
+.spinner { 
+    width: 20px; 
+    height: 20px; 
+    border: 2px solid transparent; 
+    border-top-color: currentColor; 
+    border-radius: 50%; 
+    animation: spin 0.8s linear infinite; 
+}
+
+================================================================================
+SECTION 5: SAMPLE DATA FOR DEMO
+================================================================================
+
+Use this sample data to populate the interactive preview:
+
+CONTACTS (French-Canadian names):
+| Prénom   | Nom       | Téléphone      | Ville    |
+|----------|-----------|----------------|----------|
+| Marie    | Tremblay  | 514-555-1234   | Montréal |
+| Jean     | Dubois    | 438-555-5678   | Laval    |
+| Sophie   | Gagnon    | 450-555-9012   | Longueuil|
+| Pierre   | Roy       | 514-555-3456   | Montréal |
+| Isabelle | Leblanc   | 438-555-7890   | Québec   |
+| Marc     | Côté      | 418-555-2345   | Québec   |
+| Anne     | Bouchard  | 514-555-6789   | Verdun   |
+| François | Lavoie    | 450-555-0123   | Brossard |
+
+SAMPLE MESSAGES:
+1. "Bonjour {{prenom}}, votre rendez-vous est confirmé pour demain à 14h."
+2. "Cher(e) {{prenom}} {{nom}}, nous avons une offre exclusive pour vous!"
+3. "Rappel: Votre paiement de {{montant}}$ est dû le {{date}}."
+4. "Merci {{prenom}}! Votre dossier a été approuvé."
+
+================================================================================
+SECTION 6: ANIMATED BACKGROUND IDEAS
+================================================================================
+
+OPTIONS FOR HERO/PAGE BACKGROUND:
+
+1. GRADIENT MESH ANIMATION
+   - Slowly morphing gradient blobs in blue/purple
+   - Think: Stripe homepage or Linear app
+   - Colors: #0A84FF, #5e5ce6, #00C7BE, #0D0D0D
+   
+2. AURORA BOREALIS
+   - Flowing waves of light in blue/purple/teal
+   - Subtle, not distracting
+   - Works well with dark backgrounds
+
+3. PARTICLE FIELD
+   - Floating dots/particles connected by lines
+   - Slowly drifting upward
+   - Very subtle, professional
+
+4. GEOMETRIC PATTERNS
+   - Isometric grid or honeycomb
+   - Subtle animation (pulsing, shifting)
+   - Blue glow effects
+
+5. NOISE TEXTURE + GRADIENT
+   - Subtle grain/noise overlay
+   - Large gradient underneath
+   - Very modern, trendy look
+
+IMPLEMENTATION:
+- Use CSS animations or lightweight JS library
+- Keep performance in mind (no heavy WebGL unless necessary)
+- Should not distract from content
+- Works with scroll (parallax effect optional)
+
+================================================================================
+SECTION 7: RESPONSIVE DESIGN NOTES
+================================================================================
+
+DESKTOP (1200px+):
+- Sticky app preview on right, content on left
+- Full features visible
+- Two-column layouts where appropriate
+
+TABLET (768px - 1199px):
+- Sticky preview smaller or at bottom
+- Single column for most content
+- Reduce animation complexity
+
+MOBILE (< 768px):
+- No sticky preview (inline screenshots instead)
+- Single column everything
+- Hamburger menu for navigation
+- Touch-friendly button sizes
+- Simplified animations
+
+================================================================================
+SECTION 8: TECHNICAL REQUIREMENTS
+================================================================================
+
+FRAMEWORKS SUGGESTION:
+- React/Next.js or Vue/Nuxt for interactivity
+- Tailwind CSS for styling
+- Framer Motion or GSAP for animations
+- Stripe.js for payment
+- Calendly embed or custom booking
+
+PERFORMANCE:
+- Lazy load images and animations
+- Optimize for Core Web Vitals
+- Fast initial load time
+- Smooth 60fps animations
+
+ACCESSIBILITY:
+- Proper heading hierarchy
+- Alt text for images
+- Keyboard navigation
+- Sufficient color contrast
+- Screen reader friendly
+
+SEO:
+- Proper meta tags
+- Open Graph tags for social sharing
+- Structured data if applicable
+- Fast loading
+
+================================================================================
+SECTION 9: CALL TO ACTION SUMMARY
+================================================================================
+
+PRIMARY CTAs (in order of priority):
+1. "Télécharger pour Mac" - Download app
+2. "Acheter une licence" - Purchase via Stripe
+3. "Planifier une démo" - Book a meeting
+4. "Rejoindre la beta iPhone" - Email capture for beta
+
+SECONDARY CTAs:
+1. "Voir les fonctionnalités" - Scroll to features
+2. "Comment ça marche" - Scroll to how it works
+3. "Nous contacter" - Contact form/email
+
+================================================================================
+SECTION 10: FINAL NOTES FOR AI
+================================================================================
+
+CREATIVITY ENCOURAGED:
+- This brief provides structure but YOU have creative freedom
+- Surprise with innovative interactions
+- Add micro-animations and delightful details
+- Make it memorable
+
+TONE:
+- Professional but approachable
+- Confident but not arrogant
+- Bilingual-friendly (FR primary, EN option)
+- Focus on benefits, not just features
+
+INSPIRATION SITES:
+- stripe.com (animations, design)
+- linear.app (dark theme, modern)
+- raycast.com (Mac app landing)
+- arc.net (product showcase)
+- notion.so (feature presentation)
+
+KEY DIFFERENTIATORS TO EMPHASIZE:
+1. Uses YOUR phone number (not third-party API)
+2. 100% local/private (no data upload)
+3. Works with iMessage (already installed)
+4. No per-message fees
+5. Simple 3-step process
+
+MUST-HAVE ELEMENTS:
+1. Sticky interactive app preview
+2. Animated background (not boring!)
+3. Clear pricing/CTA section
+4. Mobile coming soon teaser
+5. Trust signals (testimonials/stats)
+
+AVOID:
+- Looking like a generic template
+- Boring gray everywhere
+- Too much text without visuals
+- Complex navigation
+- Slow-loading animations
+
+================================================================================
+END OF BRIEF
+================================================================================

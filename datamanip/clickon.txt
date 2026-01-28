@@ -1,0 +1,281 @@
+================================================================================
+                    CLICKON SOLUTIONS - BRANDING GUIDE
+================================================================================
+
+BRAND NAME
+----------
+ClickOn Solutions
+
+TAGLINE
+-------
+"Exploitez la puissance de votre base de données"
+"Générez des ventes en automatisant votre base de données avec le Club Privilège"
+
+
+================================================================================
+                              COLOR PALETTE
+================================================================================
+
+PRIMARY COLORS
+--------------
+Theme Yellow:       #FCB723 (oklch: 0.8228 0.1633 79.79)
+                    HSL: 45° 98% 57%
+                    RGB: 252, 183, 35
+                    
+Black:              #000000
+                    HSL: 0° 0% 0%
+                    
+White:              #FFFFFF
+                    HSL: 0° 0% 100%
+
+NEUTRAL COLORS (Light Mode)
+---------------------------
+Background:         #FFFFFF (white)
+Foreground:         #000000 (black)
+Card:               #FFFFFF (white)
+Card Foreground:    #000000 (black)
+Muted:              #F5F5F5 (very light gray - 96% lightness)
+Muted Foreground:   #666666 (medium gray - 40% lightness)
+Border:             #E5E5E5 (light gray - 90% lightness)
+Input:              #E5E5E5 (light gray - 90% lightness)
+
+NEUTRAL COLORS (Dark Mode)
+--------------------------
+Background:         #000000 (black)
+Foreground:         #FFFFFF (white)
+Card:               #121212 (very dark gray - 7% lightness)
+Card Foreground:    #FFFFFF (white)
+Muted:              #262626 (dark gray - 15% lightness)
+Muted Foreground:   #A6A6A6 (light gray - 65% lightness)
+Border:             #333333 (dark border - 20% lightness)
+Input:              #333333 (dark - 20% lightness)
+
+ACCENT COLORS
+-------------
+Ring (Focus):       #FCB723 (Yellow - 45° 98% 57%)
+Destructive:        HSL: 0° 84% 60% (Red for errors)
+
+
+================================================================================
+                              TYPOGRAPHY
+================================================================================
+
+PRIMARY FONT (Body Text)
+------------------------
+Font Family:        DM Sans
+Source:             Google Fonts
+CSS Variable:       --font-dm-sans
+Weights Used:       Regular (400), Medium (500), Bold (700)
+Usage:              Body text, paragraphs, UI elements
+
+HEADING FONT
+------------
+Font Family:        Space Grotesk
+Source:             Google Fonts
+CSS Variable:       --font-space-grotesk
+Weights Used:       Bold (700)
+Usage:              All headings (h1-h6)
+
+FONT STACK
+----------
+Sans-serif:         var(--font-dm-sans), system-ui, -apple-system, sans-serif
+Headings:           var(--font-space-grotesk), system-ui, -apple-system, sans-serif
+
+TEXT STYLES
+-----------
+Hero Title:         text-4xl to text-7xl (responsive), font-bold, tracking-tight
+Subtitle:           text-lg to text-xl, text-gray-300 (on dark), leading-relaxed
+Badge:              text-xs, font-bold, uppercase, tracking-wide
+Navigation:         text-sm, font-medium
+
+
+================================================================================
+                              BORDER RADIUS
+================================================================================
+
+Base Radius:        1rem (16px)
+Small (sm):         calc(var(--radius) - 4px) = 0.75rem (12px)
+Medium (md):        calc(var(--radius) - 2px) = 0.875rem (14px)
+Large (lg):         var(--radius) = 1rem (16px)
+Extra Large (xl):   calc(var(--radius) + 4px) = 1.25rem (20px)
+
+
+================================================================================
+                              UI COMPONENTS
+================================================================================
+
+BUTTONS
+-------
+Style:              shadcn/ui "new-york" style
+Default:            bg-primary (yellow), text-primary-foreground (black)
+Secondary:          bg-secondary (black), text-secondary-foreground (white)
+Outline:            border, bg-background, shadow-xs
+Ghost:              hover:bg-accent hover:text-accent-foreground
+Link:               text-primary, underline on hover
+
+Button Sizes:
+- Default:          h-9, px-4, py-2
+- Small:            h-8, px-3
+- Large:            h-10, px-6
+- Icon:             size-9 (36px)
+- Icon Small:       size-8 (32px)
+- Icon Large:       size-10 (40px)
+
+CARDS
+-----
+Background:         bg-card (white in light, dark gray in dark)
+Border:             border-border
+Radius:             rounded-lg to rounded-xl
+
+BADGES
+------
+Style:              rounded-full, px-4, py-1.5
+Primary Badge:      bg-[#fcb723], text-black, font-bold, uppercase
+
+
+================================================================================
+                              BACKGROUNDS
+================================================================================
+
+HERO SECTION
+------------
+Background:         bg-black
+Pattern:            Radial gradient dots
+                    radial-gradient(circle, rgba(252, 183, 35, 0.15) 2px, transparent 2px)
+                    Background size: 24px 24px
+
+HEADER
+------
+Background:         bg-white
+Border:             border-b border-gray-200
+Position:           sticky top-0 z-50
+
+
+================================================================================
+                              ANIMATIONS
+================================================================================
+
+Library:            Framer Motion
+Transitions:        0.6s duration for initial loads
+Accordion:          Custom keyframes for height/opacity transitions
+Scroll Behavior:    smooth scrolling with offset calculations
+
+
+================================================================================
+                              ICONS
+================================================================================
+
+Library:            Lucide React
+Common Icons:       Menu, X, ArrowRight
+Style:              Default sizing with shrink-0
+
+
+================================================================================
+                              SPACING
+================================================================================
+
+Container:          max-w-7xl mx-auto
+Horizontal Padding: px-6
+Header Height:      h-20 (80px)
+Section Padding:    py-8 (mobile), py-32 (desktop)
+
+
+================================================================================
+                              COMPONENT LIBRARY
+================================================================================
+
+Framework:          Next.js with App Router
+UI Library:         shadcn/ui (new-york style)
+Styling:            Tailwind CSS v4 with CSS variables
+Animations:         Framer Motion + tw-animate-css
+i18n:               next-intl (French/English)
+
+
+================================================================================
+                              CSS VARIABLES REFERENCE
+================================================================================
+
+:root {
+  --theme: #fcb723;
+  --primary: oklch(0.8228 0.1633 79.79);
+  --primary-foreground: 0 0% 0%;
+  --secondary: 0 0% 0%;
+  --secondary-foreground: 0 0% 100%;
+  --accent: 45 98% 57%;
+  --accent-foreground: 0 0% 0%;
+  --background: 0 0% 100%;
+  --foreground: 0 0% 0%;
+  --card: 0 0% 100%;
+  --card-foreground: 0 0% 0%;
+  --muted: 0 0% 96%;
+  --muted-foreground: 0 0% 40%;
+  --border: 0 0% 90%;
+  --input: 0 0% 90%;
+  --ring: 45 98% 57%;
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 0 0% 100%;
+  --radius: 1rem;
+}
+
+
+================================================================================
+                              CODE EXAMPLES
+================================================================================
+
+/* Import fonts in layout.tsx */
+import { DM_Sans, Space_Grotesk } from "next/font/google";
+
+const dmSans = DM_Sans({
+  subsets: ["latin"],
+  variable: "--font-dm-sans",
+});
+
+const spaceGrotesk = Space_Grotesk({
+  subsets: ["latin"],
+  variable: "--font-space-grotesk",
+});
+
+/* Apply to HTML */
+<html className={`${dmSans.variable} ${spaceGrotesk.variable}`}>
+  <body className="font-sans antialiased">
+    {children}
+  </body>
+</html>
+
+/* Primary Button Example */
+<Button className="bg-[#fcb723] text-black hover:bg-[#fcb723]/90">
+  Click Me
+</Button>
+
+/* Badge Example */
+<div className="inline-flex items-center gap-2 rounded-full bg-[#fcb723] px-4 py-1.5 text-xs font-bold tracking-wide text-black uppercase">
+  BADGE TEXT
+</div>
+
+/* Hero Section Pattern */
+<section
+  className="bg-black"
+  style={{
+    backgroundImage: `radial-gradient(circle, rgba(252, 183, 35, 0.15) 2px, transparent 2px)`,
+    backgroundSize: "24px 24px",
+  }}
+>
+
+/* Heading with Highlight */
+<h1 className="text-4xl font-bold tracking-tight text-white">
+  Regular Text <span className="text-[#fcb723]">Highlighted</span> More Text
+</h1>
+
+
+================================================================================
+                              METADATA
+================================================================================
+
+Site URL:           https://clickon.solutions
+Locale:             fr_CA (primary), en (secondary)
+Logo Path:          /clickon-logo.png
+Small Logo:         /small_logo.png
+Favicon:            /small_logo.png
+
+
+================================================================================

@@ -1,0 +1,13 @@
+i need to make a custom page for a presentation context.
+
+basically, it will be a presentation that will work similarely to kahoot. 
+workflow i thought was:
+display r code / url on the screen,
+people in the room scan it and they are quickly prompted with a inputbox that will be "how many clients you have in your database" and avg comission
+on screen of the presenter it will display stats: total people in databases, other stats that will display: addiotional sales (((avg comission * 0.46)*0.14)*0.5) rounded up
+each people that input info will have their personal stats calculated for their stats
+this needs to work live so it needs to update live (using event manager or idk so it handles it like a kahoot would)
+
+then once presenter clicks a btn at the botom it wil change state of presenter screen and local screens will be redirectedto this page" www.logipret.ca/logitext"
+
+the ui for the first part needs to be using branding from the clickon.txt file that contains styling
