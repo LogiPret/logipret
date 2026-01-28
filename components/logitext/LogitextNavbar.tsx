@@ -14,13 +14,29 @@ const navItems = [
 export const LogitextNavbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isInHowItWorks, setIsInHowItWorks] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
+
+      // Check if we're in the how-it-works section on mobile
+      const howItWorksSection = document.getElementById("how-it-works");
+      if (howItWorksSection && window.innerWidth < 768) {
+        const rect = howItWorksSection.getBoundingClientRect();
+        const inSection =
+          rect.top < 100 && rect.bottom > window.innerHeight * 0.3;
+        setIsInHowItWorks(inSection);
+      } else {
+        setIsInHowItWorks(false);
+      }
     };
     window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    window.addEventListener("resize", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleScroll);
+    };
   }, []);
 
   const handleNavClick = (
@@ -40,73 +56,77 @@ export const LogitextNavbar: React.FC = () => {
   };
 
   return (
-    <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out border-b ${
-        isScrolled
-          ? "bg-logitext-bg/70 backdrop-blur-xl border-white/10 py-3 md:py-4 shadow-lg"
-          : "bg-transparent border-transparent py-4 md:py-6"
-      }`}
-    >
-      <div className="max-w-7xl mx-auto px-4 md:px-12 flex items-center justify-between">
-        {/* Logo */}
+    <>
+      {/* Desktop Navbar - Full */}
+      <nav
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out border-b hidden md:block ${
+          isScrolled
+            ? "bg-logitext-bg/70 backdrop-blur-xl border-white/10 py-3 md:py-4 shadow-lg"
+            : "bg-transparent border-transparent py-4 md:py-6"
+        }`}
+      >
+        <div className="max-w-7xl mx-auto px-4 md:px-12 flex items-center justify-between">
+          {/* Logo */}
+          <Link
+            href="/logitext"
+            className="text-2xl font-bold text-white tracking-tight"
+          >
+            Logi<span className="text-logitext-primary">Text</span>
+          </Link>
+
+          {/* Desktop Nav */}
+          <div className="flex items-center gap-8">
+            {navItems.map((item) => (
+              <a
+                key={item.label}
+                href={item.href}
+                onClick={(e) => handleNavClick(e, item.href)}
+                className="text-sm font-medium text-white/80 hover:text-white transition-colors"
+              >
+                {item.label}
+              </a>
+            ))}
+          </div>
+
+          {/* CTA & Language */}
+          <div className="flex items-center gap-4">
+            <button className="text-sm font-medium text-white/60 hover:text-white transition-colors">
+              FR
+            </button>
+            <button className="bg-logitext-primary hover:bg-blue-600 text-white px-5 py-2 rounded-full text-sm font-medium transition-all shadow-[0_0_20px_rgba(10,132,255,0.3)] hover:shadow-[0_0_30px_rgba(10,132,255,0.5)]">
+              Get Started
+            </button>
+          </div>
+        </div>
+      </nav>
+
+      {/* Mobile - Logo only, sticky after scroll - hidden in HowItWorks */}
+      <div
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 md:hidden ${
+          isScrolled && !isInHowItWorks
+            ? "bg-[#0D0D0D]/95 backdrop-blur-xl py-2 shadow-lg opacity-100 translate-y-0"
+            : "opacity-0 -translate-y-full pointer-events-none"
+        }`}
+      >
+        <div className="px-4">
+          <Link
+            href="/logitext"
+            className="text-lg font-bold text-white tracking-tight"
+          >
+            Logi<span className="text-logitext-primary">Text</span>
+          </Link>
+        </div>
+      </div>
+
+      {/* Mobile - Initial navbar in hero (not fixed) */}
+      <div className="md:hidden absolute top-0 left-0 right-0 z-40 py-4 px-4">
         <Link
           href="/logitext"
           className="text-2xl font-bold text-white tracking-tight"
         >
           Logi<span className="text-logitext-primary">Text</span>
         </Link>
-
-        {/* Desktop Nav */}
-        <div className="hidden md:flex items-center gap-8">
-          {navItems.map((item) => (
-            <a
-              key={item.label}
-              href={item.href}
-              onClick={(e) => handleNavClick(e, item.href)}
-              className="text-sm font-medium text-white/80 hover:text-white transition-colors"
-            >
-              {item.label}
-            </a>
-          ))}
-        </div>
-
-        {/* CTA & Language */}
-        <div className="hidden md:flex items-center gap-4">
-          <button className="text-sm font-medium text-white/60 hover:text-white transition-colors">
-            FR
-          </button>
-          <button className="bg-logitext-primary hover:bg-blue-600 text-white px-5 py-2 rounded-full text-sm font-medium transition-all shadow-[0_0_20px_rgba(10,132,255,0.3)] hover:shadow-[0_0_30px_rgba(10,132,255,0.5)]">
-            Get Started
-          </button>
-        </div>
-
-        {/* Mobile Toggle */}
-        <button
-          className="md:hidden p-2 text-white"
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-        >
-          {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
       </div>
-
-      {/* Mobile Menu */}
-      {mobileMenuOpen && (
-        <div className="absolute top-full left-0 right-0 bg-logitext-surface border-b border-white/10 shadow-xl md:hidden p-6 flex flex-col gap-4 animate-fade-in">
-          {navItems.map((item) => (
-            <a
-              key={item.label}
-              href={item.href}
-              onClick={(e) => handleNavClick(e, item.href)}
-              className="text-lg font-medium text-white py-2 border-b border-white/10"
-            >
-              {item.label}
-            </a>
-          ))}
-          <button className="bg-logitext-primary w-full py-3 rounded-lg text-white font-bold mt-4">
-            Get Started
-          </button>
-        </div>
-      )}
-    </nav>
+    </>
   );
 };

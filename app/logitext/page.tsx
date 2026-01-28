@@ -73,41 +73,91 @@ export default function LogitextPage() {
       </section>
 
       {/* Problem Section */}
-      <section className="py-24 relative bg-[#121212]">
+      <section className="py-16 md:py-24 relative bg-[#121212]">
         <div className="max-w-7xl mx-auto px-4 md:px-12">
-          <div className="text-center mb-16 space-y-4">
-            <h2 className="text-3xl md:text-5xl font-bold">
-              Le problème avec l'envoi de SMS en masse
+          <div className="text-center mb-8 md:mb-16 space-y-3 md:space-y-4">
+            <h2 className="text-2xl md:text-5xl font-bold px-2">
+              Le probleme avec l'envoi de SMS en masse
             </h2>
-            <p className="text-xl text-gray-400">
-              Pourquoi est-ce si compliqué de joindre vos clients ?
+            <p className="text-base md:text-xl text-gray-400">
+              Pourquoi est-ce si complique de joindre vos clients ?
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {/* Mobile: 2x2 grid with compact cards */}
+          <div className="grid grid-cols-2 gap-3 md:hidden">
             {[
               {
                 icon: XCircle,
                 title: "Copier-coller",
-                desc: "Des heures perdues à envoyer des messages un par un.",
+                desc: "Heures perdues a envoyer un par un.",
+                color: "text-red-400",
+                bgColor: "bg-red-500/10",
+              },
+              {
+                icon: DollarSign,
+                title: "Couts eleves",
+                desc: "Abonnements et frais caches.",
+                color: "text-orange-400",
+                bgColor: "bg-orange-500/10",
+              },
+              {
+                icon: UserX,
+                title: "Impersonnel",
+                desc: "Messages generiques ignores.",
+                color: "text-gray-400",
+                bgColor: "bg-gray-500/10",
+              },
+              {
+                icon: ShieldAlert,
+                title: "Donnees exposees",
+                desc: "Contacts sur serveurs tiers.",
+                color: "text-yellow-400",
+                bgColor: "bg-yellow-500/10",
+              },
+            ].map((item, idx) => (
+              <div
+                key={idx}
+                className={`${item.bgColor} border border-white/5 p-4 rounded-xl`}
+              >
+                <div
+                  className={`w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center mb-3 ${item.color}`}
+                >
+                  <item.icon size={20} />
+                </div>
+                <h3 className="text-sm font-bold mb-1">{item.title}</h3>
+                <p className="text-gray-400 text-xs leading-relaxed">
+                  {item.desc}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          {/* Desktop: 4-column grid */}
+          <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {[
+              {
+                icon: XCircle,
+                title: "Copier-coller",
+                desc: "Des heures perdues a envoyer des messages un par un.",
                 color: "text-red-400",
               },
               {
                 icon: DollarSign,
-                title: "Coûts élevés",
-                desc: "Abonnements mensuels et frais cachés exorbitants.",
+                title: "Couts eleves",
+                desc: "Abonnements mensuels et frais caches exorbitants.",
                 color: "text-orange-400",
               },
               {
                 icon: UserX,
                 title: "Impersonnel",
-                desc: "Les messages génériques finissent ignorés.",
+                desc: "Les messages generiques finissent ignores.",
                 color: "text-gray-400",
               },
               {
                 icon: ShieldAlert,
-                title: "Données exposées",
-                desc: "Vos contacts sont envoyés sur des serveurs tiers.",
+                title: "Donnees exposees",
+                desc: "Vos contacts sont envoyes sur des serveurs tiers.",
                 color: "text-yellow-400",
               },
             ].map((item, idx) => (
@@ -132,34 +182,82 @@ export default function LogitextPage() {
       <div className="h-24 bg-gradient-to-b from-[#121212] to-logitext-bg" />
 
       {/* Solution Section */}
-      <section id="features" className="py-24 bg-logitext-bg">
+      <section id="features" className="py-16 md:py-24 bg-logitext-bg">
         <div className="max-w-7xl mx-auto px-4 md:px-12">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">
+          <div className="text-center mb-8 md:mb-16">
+            <h2 className="text-2xl md:text-5xl font-bold mb-3 md:mb-6 px-2">
               <span className="text-blue-500">LogiText</span>: Vos SMS,
               directement depuis votre Mac
             </h2>
-            <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+            <p className="text-sm md:text-xl text-gray-400 max-w-2xl mx-auto">
               La seule solution de messagerie de masse qui respecte votre vie
-              privée et celle de vos clients.
+              privee et celle de vos clients.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {/* Mobile: 2x3 compact grid */}
+          <div className="grid grid-cols-2 gap-3 md:hidden">
             {[
               {
                 title: "iMessage Natif",
-                desc: "Utilise votre propre numéro et l'application Messages de votre Mac. Pas de tiers, pas de surcoût.",
+                desc: "Votre propre numero, pas de tiers.",
                 icon: "💬",
               },
               {
                 title: "Personnalisation",
-                desc: "{{prenom}}, {{nom}} et variables illlimitées. Chaque message semble écrit à la main.",
+                desc: "Variables illimitees pour chaque message.",
                 icon: "✨",
               },
               {
-                title: "100% Privé",
-                desc: "Vos données restent sur votre machine. Aucun upload cloud, aucun tracking.",
+                title: "100% Prive",
+                desc: "Donnees sur votre machine uniquement.",
+                icon: "🔒",
+              },
+              {
+                title: "Intuitif",
+                desc: "Prise en main en 30 secondes.",
+                icon: "⚡️",
+              },
+              {
+                title: "Rapide & Fiable",
+                desc: "Gestion auto des delais.",
+                icon: "🚀",
+              },
+              {
+                title: "Support Local",
+                desc: "Developpe au Quebec.",
+                icon: "🍁",
+              },
+            ].map((feature, idx) => (
+              <div
+                key={idx}
+                className="bg-white/5 border border-white/10 p-4 rounded-xl"
+              >
+                <div className="text-2xl mb-2">{feature.icon}</div>
+                <h3 className="text-sm font-bold mb-1">{feature.title}</h3>
+                <p className="text-gray-400 text-xs leading-relaxed">
+                  {feature.desc}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          {/* Desktop: 3-column grid */}
+          <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[
+              {
+                title: "iMessage Natif",
+                desc: "Utilise votre propre numero et l'application Messages de votre Mac. Pas de tiers, pas de surcout.",
+                icon: "💬",
+              },
+              {
+                title: "Personnalisation",
+                desc: "{{prenom}}, {{nom}} et variables illimitees. Chaque message semble ecrit a la main.",
+                icon: "✨",
+              },
+              {
+                title: "100% Prive",
+                desc: "Vos donnees restent sur votre machine. Aucun upload cloud, aucun tracking.",
                 icon: "🔒",
               },
               {
@@ -169,12 +267,12 @@ export default function LogitextPage() {
               },
               {
                 title: "Rapide & Fiable",
-                desc: "Envoi automatique avec gestion des délais pour éviter le blocage opérateur.",
+                desc: "Envoi automatique avec gestion des delais pour eviter le blocage operateur.",
                 icon: "🚀",
               },
               {
                 title: "Support Local",
-                desc: "Développé au Québec. Support technique réactif en français et anglais.",
+                desc: "Developpe au Quebec. Support technique reactif en francais et anglais.",
                 icon: "🍁",
               },
             ].map((feature, idx) => (
@@ -197,18 +295,63 @@ export default function LogitextPage() {
       {/* Coming Soon Section */}
       <section
         id="coming-soon"
-        className="py-24 bg-[#0D0D0D] border-t border-white/5"
+        className="py-16 md:py-24 bg-[#0D0D0D] border-t border-white/5"
       >
-        <div className="max-w-7xl mx-auto px-4 md:px-12 text-center mb-16">
-          <h2 className="text-4xl font-bold mb-4">
-            Bientôt disponible partout
+        <div className="max-w-7xl mx-auto px-4 md:px-12 text-center mb-8 md:mb-16">
+          <h2 className="text-2xl md:text-4xl font-bold mb-2 md:mb-4">
+            Bientot disponible partout
           </h2>
-          <p className="text-xl text-gray-400">
-            LogiText évolue. Restez à l'écoute.
+          <p className="text-base md:text-xl text-gray-400">
+            LogiText evolue. Restez a l'ecoute.
           </p>
         </div>
 
-        <div className="max-w-5xl mx-auto px-4 md:px-12 grid grid-cols-1 md:grid-cols-3 gap-8">
+        {/* Mobile: Featured card + horizontal row */}
+        <div className="md:hidden px-4 space-y-4">
+          {/* Featured iPhone card */}
+          <div className="bg-[#1C1C1E] p-5 rounded-2xl border border-blue-500/30 relative overflow-hidden">
+            <div className="absolute top-0 right-0 bg-blue-500 text-[10px] font-bold px-2 py-1 rounded-bl-lg">
+              BETA
+            </div>
+            <div className="flex items-center gap-4">
+              <div className="w-16 h-16 bg-gradient-to-br from-blue-900/30 to-blue-500/10 rounded-xl flex items-center justify-center shrink-0">
+                <span className="text-3xl">📱</span>
+              </div>
+              <div className="flex-1">
+                <h3 className="text-base font-bold mb-1">
+                  LogiText pour iPhone
+                </h3>
+                <p className="text-gray-400 text-xs mb-2">
+                  Envoyez des SMS directement depuis votre iPhone.
+                </p>
+                <button className="text-blue-400 text-xs font-medium">
+                  Rejoindre la beta &rarr;
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* Smaller cards in row */}
+          <div className="flex gap-3">
+            <div className="flex-1 bg-[#1C1C1E] p-4 rounded-xl border border-white/5 opacity-60">
+              <div className="w-12 h-12 bg-white/5 rounded-lg flex items-center justify-center mb-3 grayscale">
+                <span className="text-2xl">🤖</span>
+              </div>
+              <h3 className="text-sm font-bold mb-1">Android</h3>
+              <p className="text-gray-500 text-[10px]">2024</p>
+            </div>
+            <div className="flex-1 bg-[#1C1C1E] p-4 rounded-xl border border-white/5 opacity-60">
+              <div className="w-12 h-12 bg-white/5 rounded-lg flex items-center justify-center mb-3 grayscale">
+                <span className="text-2xl">🌐</span>
+              </div>
+              <h3 className="text-sm font-bold mb-1">Web App</h3>
+              <p className="text-gray-500 text-[10px]">2024</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Desktop: 3-column grid */}
+        <div className="hidden md:grid max-w-5xl mx-auto px-4 md:px-12 md:grid-cols-3 gap-8">
           <div className="bg-[#1C1C1E] p-8 rounded-2xl border border-blue-500/30 relative overflow-hidden group">
             <div className="absolute top-0 right-0 bg-blue-500 text-xs font-bold px-2 py-1 rounded-bl-lg">
               BETA
@@ -218,14 +361,14 @@ export default function LogitextPage() {
             </div>
             <h3 className="text-xl font-bold mb-2">LogiText pour iPhone</h3>
             <p className="text-gray-400 text-sm mb-4">
-              Envoyez des SMS directement depuis votre iPhone. Même simplicité.
+              Envoyez des SMS directement depuis votre iPhone. Meme simplicite.
             </p>
             <button className="text-blue-400 text-sm font-medium hover:text-blue-300">
               Rejoindre la beta &rarr;
             </button>
           </div>
 
-          <div className="bg-[#1C1C1E] p-8 rounded-2xl border border-white/5 opacity-75 hover:opacity-100 transition-opacity">
+          <div className="bg-[#1C1C1E] p-8 rounded-2xl border border-white/5 opacity-75 hover:opacity-100 transition-opacity relative">
             <div className="absolute top-0 right-0 bg-white/10 text-xs font-bold px-2 py-1 rounded-bl-lg text-gray-400">
               2024
             </div>
@@ -238,7 +381,7 @@ export default function LogitextPage() {
             </p>
           </div>
 
-          <div className="bg-[#1C1C1E] p-8 rounded-2xl border border-white/5 opacity-75 hover:opacity-100 transition-opacity">
+          <div className="bg-[#1C1C1E] p-8 rounded-2xl border border-white/5 opacity-75 hover:opacity-100 transition-opacity relative">
             <div className="absolute top-0 right-0 bg-white/10 text-xs font-bold px-2 py-1 rounded-bl-lg text-gray-400">
               2024
             </div>
@@ -247,7 +390,7 @@ export default function LogitextPage() {
             </div>
             <h3 className="text-xl font-bold mb-2">LogiText Web</h3>
             <p className="text-gray-400 text-sm">
-              Accédez à LogiText depuis n'importe quel navigateur.
+              Accedez a LogiText depuis n'importe quel navigateur.
             </p>
           </div>
         </div>
