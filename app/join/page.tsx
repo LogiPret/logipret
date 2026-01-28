@@ -31,9 +31,8 @@ export default function JoinPage() {
         const data = await res.json();
         if (data.redirectToLogitext && step !== "form") {
           setStep("redirecting");
-          setTimeout(() => {
-            window.location.href = "https://www.logipret.ca/logitext";
-          }, 2000);
+          // Redirect immediately
+          window.location.href = "https://www.logipret.ca/logitext";
         }
       }
     } catch (err) {
@@ -45,7 +44,8 @@ export default function JoinPage() {
     // Only poll for redirect when user has submitted (not on form)
     if (step === "stats") {
       checkForRedirect();
-      pollIntervalRef.current = setInterval(checkForRedirect, 1500);
+      // Poll every 500ms for faster redirect response
+      pollIntervalRef.current = setInterval(checkForRedirect, 500);
     }
 
     // Handle visibility change to refresh when tab becomes visible
