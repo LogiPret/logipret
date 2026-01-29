@@ -6,6 +6,119 @@ import { translations, Language } from "@/lib/i18n/translations";
 const t = (key: keyof typeof translations.clickon, lang: Language) =>
   translations.clickon[key][lang];
 
+// Odometer-style digit that rolls through each number
+function OdometerDigit({ digit }: { digit: string }) {
+  const [displayDigit, setDisplayDigit] = useState(parseInt(digit) || 0);
+  const targetDigit = parseInt(digit) || 0;
+  const animationRef = useRef<NodeJS.Timeout | null>(null);
+  const isAnimating = useRef(false);
+
+  useEffect(() => {
+    // Non-numeric - just display
+    if (isNaN(parseInt(digit))) return;
+
+    const target = parseInt(digit);
+
+    // If already at target, do nothing
+    if (displayDigit === target) return;
+
+    // Clear any existing animation
+    if (animationRef.current) {
+      clearInterval(animationRef.current);
+    }
+
+    isAnimating.current = true;
+
+    // Calculate direction - always go "up" (forward) like an odometer
+    // From 8 to 4: 8→9→0→1→2→3→4 (6 steps forward)
+    // From 4 to 8: 4→5→6→7→8 (4 steps forward)
+    const stepsForward = (target - displayDigit + 10) % 10;
+    const stepsBackward = (displayDigit - target + 10) % 10;
+
+    // Choose shortest path, but prefer forward for ties
+    const goForward = stepsForward <= stepsBackward;
+    const totalSteps = goForward ? stepsForward : stepsBackward;
+
+    let currentStep = 0;
+    let currentDigit = displayDigit;
+
+    const speed = Math.max(50, 200 / totalSteps); // Faster for more steps
+
+    animationRef.current = setInterval(() => {
+      currentStep++;
+      if (goForward) {
+        currentDigit = (currentDigit + 1) % 10;
+      } else {
+        currentDigit = (currentDigit - 1 + 10) % 10;
+      }
+
+      setDisplayDigit(currentDigit);
+
+      if (currentStep >= totalSteps) {
+        if (animationRef.current) {
+          clearInterval(animationRef.current);
+          animationRef.current = null;
+        }
+        isAnimating.current = false;
+      }
+    }, speed);
+
+    return () => {
+      if (animationRef.current) {
+        clearInterval(animationRef.current);
+        animationRef.current = null;
+      }
+    };
+  }, [digit, targetDigit]);
+
+  // Non-numeric characters don't animate
+  if (isNaN(parseInt(digit))) {
+    return <span className="inline-block">{digit}</span>;
+  }
+
+  return (
+    <span
+      className="inline-block relative overflow-hidden"
+      style={{ width: "0.6em", height: "1.2em", verticalAlign: "bottom" }}
+    >
+      <span
+        key={displayDigit}
+        className="absolute inset-0 flex items-center justify-center"
+        style={{
+          animation: "flipIn 80ms ease-out",
+        }}
+      >
+        {displayDigit}
+      </span>
+      <style jsx>{`
+        @keyframes flipIn {
+          0% {
+            transform: translateY(-30%);
+            opacity: 0.5;
+          }
+          100% {
+            transform: translateY(0);
+            opacity: 1;
+          }
+        }
+      `}</style>
+    </span>
+  );
+}
+
+// Animated value - handles the full number string
+function AnimatedValue({ value }: { value: string | number }) {
+  const stringValue = String(value);
+
+  return (
+    <span className="inline-flex justify-center">
+      {stringValue.split("").map((char, i) => (
+        <OdometerDigit key={i} digit={char} />
+      ))}
+    </span>
+  );
+}
+
 interface Stats {
   participantCount: number;
   totalClients: number;
@@ -297,7 +410,7 @@ function StatCard({
         {label}
       </p>
       <p
-        className={`font-bold leading-none ${
+        className={`font-bold leading-none tabular-nums ${
           isHero
             ? "text-2xl md:text-4xl lg:text-6xl xl:text-7xl text-[#FCB723]"
             : isMedium
@@ -305,7 +418,7 @@ function StatCard({
               : "text-xl text-white"
         }`}
       >
-        {value}
+        <AnimatedValue value={value} />
       </p>
     </div>
   );
