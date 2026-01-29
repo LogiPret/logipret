@@ -44,6 +44,7 @@ export const QuoteModal: React.FC<QuoteModalProps> = ({ isOpen, onClose }) => {
     setErrorMessage("");
 
     try {
+      // Use fetch as primary method to ensure we get confirmation
       const response = await fetch("/api/quote", {
         method: "POST",
         headers: {
@@ -67,12 +68,16 @@ export const QuoteModal: React.FC<QuoteModalProps> = ({ isOpen, onClose }) => {
         description: "",
       });
 
-      // Close modal after success
       setTimeout(() => {
         onClose();
         setSubmitStatus("idle");
       }, 2000);
     } catch (error) {
+      // Fallback to sendBeacon if fetch fails
+      navigator.sendBeacon(
+        "/api/quote",
+        new Blob([JSON.stringify(formData)], { type: "application/json" }),
+      );
       setSubmitStatus("error");
       setErrorMessage(
         error instanceof Error ? error.message : "Une erreur est survenue",

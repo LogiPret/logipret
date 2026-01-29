@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import nodemailer from "nodemailer";
+
+const N8N_WEBHOOK_URL =
+  "https://n8n-wwfb.onrender.com/webhook/66536b6f-5973-49e0-a8b3-abe85b1041aa";
 
 interface LogitextRequest {
   firstName: string;
@@ -9,100 +11,46 @@ interface LogitextRequest {
   hasMacbook: boolean;
 }
 
-async function sendEmail(data: LogitextRequest) {
+async function sendToWebhook(data: LogitextRequest) {
   const { firstName, lastName, phone, hasIphone, hasMacbook } = data;
 
   const devices = [];
   if (hasIphone) devices.push("iPhone");
   if (hasMacbook) devices.push("MacBook");
-  const devicesText = devices.length > 0 ? devices.join(", ") : "Aucun";
+
+  const payload = {
+    type: "logitext_signup",
+    firstName,
+    lastName,
+    phone,
+    hasIphone,
+    hasMacbook,
+    devices: devices.join(", ") || "Aucun",
+    timestamp: new Date().toISOString(),
+    to: "hotth@logipret.ca",
+    subject: `LogiText - Nouvelle inscription: ${firstName} ${lastName}`,
+  };
 
   try {
-    const transporter = nodemailer.createTransport({
-      host: "smtp.gmail.com",
-      port: 587,
-      secure: false,
-      auth: {
-        user: process.env.GMAIL_USER,
-        pass: process.env.GMAIL_APP_PASSWORD,
-      },
-      tls: {
-        rejectUnauthorized: false,
-      },
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 10000);
+
+    const response = await fetch(N8N_WEBHOOK_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+      signal: controller.signal,
     });
 
-    const mailOptions = {
-      from: process.env.GMAIL_USER,
-      to: "hotth@logipret.ca",
-      subject: `LogiText - Nouvelle inscription: ${firstName} ${lastName}`,
-      html: `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-          <h2 style="color: #007AFF; border-bottom: 2px solid #007AFF; padding-bottom: 10px;">
-            Nouvelle inscription LogiText
-          </h2>
-          
-          <div style="background: #f5f5f5; padding: 20px; border-radius: 8px; margin: 20px 0;">
-            <h3 style="margin-top: 0; color: #333;">Informations du contact</h3>
-            <table style="width: 100%; border-collapse: collapse;">
-              <tr>
-                <td style="padding: 8px 0; font-weight: bold; width: 140px;">Prenom:</td>
-                <td style="padding: 8px 0;">${firstName}</td>
-              </tr>
-              <tr>
-                <td style="padding: 8px 0; font-weight: bold;">Nom:</td>
-                <td style="padding: 8px 0;">${lastName}</td>
-              </tr>
-              <tr>
-                <td style="padding: 8px 0; font-weight: bold;">Telephone:</td>
-                <td style="padding: 8px 0;"><a href="tel:${phone}">${phone}</a></td>
-              </tr>
-            </table>
-          </div>
-          
-          <div style="background: #fff; border: 1px solid #ddd; padding: 20px; border-radius: 8px;">
-            <h3 style="margin-top: 0; color: #333;">Appareils Apple</h3>
-            <table style="width: 100%; border-collapse: collapse;">
-              <tr>
-                <td style="padding: 8px 0; font-weight: bold; width: 140px;">iPhone:</td>
-                <td style="padding: 8px 0; color: ${hasIphone ? "#30D158" : "#FF453A"};">${hasIphone ? "Oui" : "Non"}</td>
-              </tr>
-              <tr>
-                <td style="padding: 8px 0; font-weight: bold;">MacBook:</td>
-                <td style="padding: 8px 0; color: ${hasMacbook ? "#30D158" : "#FF453A"};">${hasMacbook ? "Oui" : "Non"}</td>
-              </tr>
-            </table>
-          </div>
-          
-          <p style="color: #666; font-size: 12px; margin-top: 30px; text-align: center;">
-            Ce message a ete envoye automatiquement depuis le site LogiText.
-          </p>
-        </div>
-      `,
-      text: `
-Nouvelle inscription LogiText
+    clearTimeout(timeoutId);
 
-INFORMATIONS DU CONTACT
------------------------
-Prenom: ${firstName}
-Nom: ${lastName}
-Telephone: ${phone}
-
-APPAREILS APPLE
----------------
-iPhone: ${hasIphone ? "Oui" : "Non"}
-MacBook: ${hasMacbook ? "Oui" : "Non"}
-
----
-Ce message a ete envoye automatiquement depuis le site LogiText.
-      `,
-    };
-
-    await transporter.sendMail(mailOptions);
-    console.log(
-      `LogiText email sent successfully for ${firstName} ${lastName}`,
-    );
+    if (!response.ok) {
+      console.error(`Webhook failed with status: ${response.status}`);
+    } else {
+      console.log(`LogiText webhook sent for ${firstName} ${lastName}`);
+    }
   } catch (error) {
-    console.error("Error sending LogiText email:", error);
+    console.error("Error sending to webhook:", error);
   }
 }
 
@@ -118,19 +66,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const emailPromise = sendEmail(body);
-
-    if (
-      typeof globalThis !== "undefined" &&
-      "waitUntil" in
-        (request as unknown as { waitUntil?: (promise: Promise<void>) => void })
-    ) {
-      (
-        request as unknown as { waitUntil: (promise: Promise<void>) => void }
-      ).waitUntil(emailPromise);
-    } else {
-      emailPromise.catch(console.error);
-    }
+    // Await the webhook to ensure it completes
+    await sendToWebhook(body);
 
     return NextResponse.json(
       { message: "Inscription envoyee avec succes" },

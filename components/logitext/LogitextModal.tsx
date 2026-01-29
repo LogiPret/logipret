@@ -27,17 +27,20 @@ export const LogitextModal: React.FC<LogitextModalProps> = ({
     e.preventDefault();
     setStatus("loading");
 
+    const payload = {
+      firstName,
+      lastName,
+      phone,
+      hasIphone,
+      hasMacbook,
+    };
+
     try {
+      // Use fetch as primary method to ensure we get confirmation
       const res = await fetch("/api/logitext", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          firstName,
-          lastName,
-          phone,
-          hasIphone,
-          hasMacbook,
-        }),
+        body: JSON.stringify(payload),
       });
 
       if (res.ok) {
@@ -55,6 +58,11 @@ export const LogitextModal: React.FC<LogitextModalProps> = ({
         setStatus("error");
       }
     } catch {
+      // Fallback to sendBeacon if fetch fails (e.g., network issues)
+      navigator.sendBeacon(
+        "/api/logitext",
+        new Blob([JSON.stringify(payload)], { type: "application/json" }),
+      );
       setStatus("error");
     }
   };
