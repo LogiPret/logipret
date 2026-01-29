@@ -1,6 +1,10 @@
 "use client";
 
 import { useEffect, useState, useCallback, useRef } from "react";
+import { translations, Language } from "@/lib/i18n/translations";
+
+const t = (key: keyof typeof translations.join, lang: Language) =>
+  translations.join[key][lang];
 
 interface PersonalStats {
   clients: number;
@@ -12,6 +16,7 @@ interface PersonalStats {
 }
 
 export default function JoinPage() {
+  const [lang, setLang] = useState<Language>("fr");
   const [step, setStep] = useState<"form" | "stats" | "redirecting">("form");
   const [clients, setClients] = useState("");
   const [avgCommission, setAvgCommission] = useState("");
@@ -31,7 +36,6 @@ export default function JoinPage() {
         const data = await res.json();
         if (data.redirectToLogitext && step !== "form") {
           setStep("redirecting");
-          // Redirect immediately
           window.location.href = "/logitext";
         }
       }
@@ -41,14 +45,11 @@ export default function JoinPage() {
   }, [step]);
 
   useEffect(() => {
-    // Only poll for redirect when user has submitted (not on form)
     if (step === "stats") {
       checkForRedirect();
-      // Poll every 500ms for faster redirect response
       pollIntervalRef.current = setInterval(checkForRedirect, 500);
     }
 
-    // Handle visibility change to refresh when tab becomes visible
     const handleVisibilityChange = () => {
       if (document.visibilityState === "visible" && step === "stats") {
         checkForRedirect();
@@ -67,7 +68,6 @@ export default function JoinPage() {
     setIsSubmitting(true);
 
     try {
-      // Check if user already has a participant ID from a previous session
       const existingId = localStorage.getItem("clickon_participant_id");
 
       const res = await fetch("/api/presentation", {
@@ -83,7 +83,6 @@ export default function JoinPage() {
 
       const data = await res.json();
       if (data.success) {
-        // Store the participant ID for future page reloads
         localStorage.setItem("clickon_participant_id", data.participantId);
         setPersonalStats(data.personalStats);
         setStep("stats");
@@ -106,8 +105,10 @@ export default function JoinPage() {
       >
         <div className="text-center px-6">
           <div className="w-16 h-16 border-4 border-[#FCB723] border-t-transparent rounded-full animate-spin mx-auto mb-6"></div>
-          <h2 className="text-2xl font-bold mb-2">Redirecting...</h2>
-          <p className="text-gray-400">Taking you to the Logitext demo</p>
+          <h2 className="text-2xl font-bold mb-2">
+            {t("redirectingToDemo", lang)}
+          </h2>
+          <p className="text-gray-400">{t("takingYouToDemo", lang)}</p>
         </div>
       </div>
     );
@@ -123,13 +124,21 @@ export default function JoinPage() {
     >
       {/* Header */}
       <header className="border-b border-[#333] py-4">
-        <div className="max-w-lg mx-auto px-6 flex items-center gap-3">
-          <div className="w-8 h-8 bg-[#FCB723] rounded-lg flex items-center justify-center">
-            <span className="text-black font-bold text-sm">C</span>
+        <div className="max-w-lg mx-auto px-6 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 bg-[#FCB723] rounded-lg flex items-center justify-center">
+              <span className="text-black font-bold text-sm">C</span>
+            </div>
+            <span className="text-lg font-bold tracking-tight">
+              ClickOn Solutions
+            </span>
           </div>
-          <span className="text-lg font-bold tracking-tight">
-            ClickOn Solutions
-          </span>
+          <button
+            onClick={() => setLang(lang === "fr" ? "en" : "fr")}
+            className="text-sm font-medium text-gray-400 hover:text-white transition-colors"
+          >
+            {lang === "fr" ? "EN" : "FR"}
+          </button>
         </div>
       </header>
 
@@ -139,14 +148,12 @@ export default function JoinPage() {
           <>
             <div className="text-center mb-10">
               <div className="inline-flex items-center gap-2 rounded-full bg-[#FCB723] px-4 py-1.5 text-xs font-bold tracking-wide text-black uppercase mb-4">
-                Live Session
+                {translations.clickon.liveSession[lang]}
               </div>
               <h1 className="text-3xl font-bold tracking-tight mb-2">
-                Welcome!
+                {t("welcome", lang)}
               </h1>
-              <p className="text-gray-400">
-                Enter your information to see your potential
-              </p>
+              <p className="text-gray-400">{t("enterInfo", lang)}</p>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-6">
@@ -155,14 +162,14 @@ export default function JoinPage() {
                   htmlFor="clients"
                   className="block text-sm font-medium text-gray-300 mb-2"
                 >
-                  How many clients do you have in your database?
+                  {t("howManyClients", lang)}
                 </label>
                 <input
                   type="number"
                   id="clients"
                   value={clients}
                   onChange={(e) => setClients(e.target.value)}
-                  placeholder="e.g., 500"
+                  placeholder={t("clientsPlaceholder", lang)}
                   required
                   min="0"
                   className="w-full bg-[#121212] border border-[#333] rounded-xl px-4 py-4 text-white text-lg placeholder-gray-500 focus:outline-none focus:border-[#FCB723] focus:ring-1 focus:ring-[#FCB723] transition-colors"
@@ -174,14 +181,14 @@ export default function JoinPage() {
                   htmlFor="commission"
                   className="block text-sm font-medium text-gray-300 mb-2"
                 >
-                  What is your average commission? ($)
+                  {t("avgCommissionLabel", lang)}
                 </label>
                 <input
                   type="number"
                   id="commission"
                   value={avgCommission}
                   onChange={(e) => setAvgCommission(e.target.value)}
-                  placeholder="e.g., 5000"
+                  placeholder={t("commissionPlaceholder", lang)}
                   required
                   min="0"
                   className="w-full bg-[#121212] border border-[#333] rounded-xl px-4 py-4 text-white text-lg placeholder-gray-500 focus:outline-none focus:border-[#FCB723] focus:ring-1 focus:ring-[#FCB723] transition-colors"
@@ -196,10 +203,10 @@ export default function JoinPage() {
                 {isSubmitting ? (
                   <>
                     <span className="w-5 h-5 border-2 border-black border-t-transparent rounded-full animate-spin"></span>
-                    Calculating...
+                    {t("calculating", lang)}
                   </>
                 ) : (
-                  "Calculate My Potential"
+                  t("calculatePotential", lang)
                 )}
               </button>
             </form>
@@ -208,14 +215,12 @@ export default function JoinPage() {
           <>
             <div className="text-center mb-10">
               <div className="inline-flex items-center gap-2 rounded-full bg-[#FCB723] px-4 py-1.5 text-xs font-bold tracking-wide text-black uppercase mb-4">
-                Your Results
+                {t("yourResults", lang)}
               </div>
               <h1 className="text-3xl font-bold tracking-tight mb-2">
-                Here&apos;s Your Potential
+                {t("yourPotential", lang)}
               </h1>
-              <p className="text-gray-400">
-                Based on your database and commissions
-              </p>
+              <p className="text-gray-400">{t("basedOn", lang)}</p>
             </div>
 
             {personalStats && (
@@ -223,7 +228,7 @@ export default function JoinPage() {
                 <div className="grid grid-cols-2 gap-4">
                   <div className="bg-[#121212] border border-[#333] rounded-2xl p-4">
                     <p className="text-xs text-gray-400 uppercase tracking-wide mb-1">
-                      Clients
+                      {t("clients", lang)}
                     </p>
                     <p className="text-2xl font-bold text-white">
                       {personalStats.clients.toLocaleString()}
@@ -232,10 +237,10 @@ export default function JoinPage() {
 
                   <div className="bg-[#121212] border border-[#333] rounded-2xl p-4">
                     <p className="text-xs text-gray-400 uppercase tracking-wide mb-1">
-                      Avg Commission
+                      {t("avgComm", lang)}
                     </p>
                     <p className="text-2xl font-bold text-white">
-                      ${personalStats.avgCommission.toLocaleString()}
+                      {personalStats.avgCommission.toLocaleString()} $
                     </p>
                   </div>
                 </div>
@@ -243,7 +248,7 @@ export default function JoinPage() {
                 <div className="grid grid-cols-2 gap-4">
                   <div className="bg-[#121212] border border-[#333] rounded-2xl p-4">
                     <p className="text-xs text-gray-400 uppercase tracking-wide mb-1">
-                      Ouvertures (46%)
+                      {t("opens", lang)}
                     </p>
                     <p className="text-2xl font-bold text-white">
                       {personalStats.ouvertures.toLocaleString()}
@@ -252,7 +257,7 @@ export default function JoinPage() {
 
                   <div className="bg-[#121212] border border-[#333] rounded-2xl p-4">
                     <p className="text-xs text-gray-400 uppercase tracking-wide mb-1">
-                      Engagement (14%)
+                      {t("engagement", lang)}
                     </p>
                     <p className="text-2xl font-bold text-white">
                       {personalStats.engagement.toLocaleString()}
@@ -262,7 +267,7 @@ export default function JoinPage() {
 
                 <div className="bg-[#121212] border border-[#333] rounded-2xl p-4">
                   <p className="text-xs text-gray-400 uppercase tracking-wide mb-1">
-                    Potential Sales (5%)
+                    {t("potentialSales", lang)}
                   </p>
                   <p className="text-2xl font-bold text-white">
                     {personalStats.potentielVentes.toLocaleString()}
@@ -271,13 +276,13 @@ export default function JoinPage() {
 
                 <div className="bg-[#FCB723]/10 border border-[#FCB723]/30 rounded-2xl p-6">
                   <p className="text-sm text-[#FCB723] uppercase tracking-wide mb-2">
-                    Your Potential Revenue
+                    {t("yourPotentialRevenue", lang)}
                   </p>
                   <p className="text-5xl font-bold text-[#FCB723]">
-                    ${personalStats.potentielRevenu.toLocaleString()}
+                    {personalStats.potentielRevenu.toLocaleString()} $
                   </p>
                   <p className="text-sm text-gray-400 mt-3">
-                    With Club Privilege automation
+                    {t("withAutomation", lang)}
                   </p>
                 </div>
               </div>
@@ -290,7 +295,7 @@ export default function JoinPage() {
                   <span className="relative inline-flex rounded-full h-3 w-3 bg-[#FCB723]"></span>
                 </span>
                 <span className="text-gray-400 text-sm">
-                  Waiting for presenter to continue...
+                  {t("waitingForPresenter", lang)}
                 </span>
               </div>
             </div>

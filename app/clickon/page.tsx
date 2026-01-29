@@ -1,6 +1,10 @@
 "use client";
 
 import { useEffect, useState, useCallback, useRef } from "react";
+import { translations, Language } from "@/lib/i18n/translations";
+
+const t = (key: keyof typeof translations.clickon, lang: Language) =>
+  translations.clickon[key][lang];
 
 interface Stats {
   participantCount: number;
@@ -15,6 +19,7 @@ interface Stats {
 }
 
 export default function PresenterPage() {
+  const [lang, setLang] = useState<Language>("fr");
   const [stats, setStats] = useState<Stats>({
     participantCount: 0,
     totalClients: 0,
@@ -41,10 +46,7 @@ export default function PresenterPage() {
       });
       if (res.ok) {
         const data = await res.json();
-        // Only update if we have valid data to prevent flash to 0
         setStats((prev) => {
-          // If new data has participants or is explicitly inactive (reset), use it
-          // Otherwise keep previous values to prevent flash
           if (
             data.participantCount > 0 ||
             !data.isActive ||
@@ -64,17 +66,10 @@ export default function PresenterPage() {
   }, []);
 
   useEffect(() => {
-    // Set the join URL based on current origin
     setJoinUrl(`${window.location.origin}/join`);
-
-    // Use polling as primary method - more reliable than SSE
-    // Fetch immediately on mount
     fetchStats();
-
-    // Poll every 1 second for real-time updates
     pollIntervalRef.current = setInterval(fetchStats, 1000);
 
-    // Also set up visibility change handler to refresh when tab becomes visible
     const handleVisibilityChange = () => {
       if (document.visibilityState === "visible") {
         fetchStats();
@@ -82,7 +77,6 @@ export default function PresenterPage() {
     };
     document.addEventListener("visibilitychange", handleVisibilityChange);
 
-    // Cleanup
     return () => {
       if (pollIntervalRef.current) clearInterval(pollIntervalRef.current);
       document.removeEventListener("visibilitychange", handleVisibilityChange);
@@ -95,7 +89,6 @@ export default function PresenterPage() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ action: "redirect" }),
     });
-    // Redirect presenter to demo page
     window.location.href = "/demo";
   };
 
@@ -126,12 +119,20 @@ export default function PresenterPage() {
               ClickOn Solutions
             </span>
           </div>
-          <button
-            onClick={handleReset}
-            className="text-xs lg:text-sm text-gray-400 hover:text-white transition-colors"
-          >
-            Reset Session
-          </button>
+          <div className="flex items-center gap-4">
+            <button
+              onClick={() => setLang(lang === "fr" ? "en" : "fr")}
+              className="text-sm font-medium text-gray-400 hover:text-white transition-colors"
+            >
+              {lang === "fr" ? "EN" : "FR"}
+            </button>
+            <button
+              onClick={handleReset}
+              className="text-xs lg:text-sm text-gray-400 hover:text-white transition-colors"
+            >
+              {t("resetSession", lang)}
+            </button>
+          </div>
         </div>
       </header>
 
@@ -140,14 +141,13 @@ export default function PresenterPage() {
         {/* Left Side - QR Code */}
         <div className="lg:w-1/2 flex flex-col items-center justify-center p-3 border-b lg:border-b-0 lg:border-r border-[#333] overflow-hidden">
           <div className="inline-flex items-center gap-2 rounded-full bg-[#FCB723] px-3 py-1 text-xs font-bold tracking-wide text-black uppercase mb-2">
-            Session en direct
+            {t("liveSession", lang)}
           </div>
           <h1 className="text-xl lg:text-2xl font-bold tracking-tight mb-1 text-center">
-            Rejoignez la <span className="text-[#FCB723]">Présentation</span>
+            {t("joinPresentation", lang)}{" "}
+            <span className="text-[#FCB723]">{t("presentation", lang)}</span>
           </h1>
-          <p className="text-sm text-gray-400 mb-2">
-            Scannez le code QR pour participer
-          </p>
+          <p className="text-sm text-gray-400 mb-2">{t("scanQR", lang)}</p>
 
           {/* QR Code - Maximum size square */}
           <div
@@ -185,15 +185,15 @@ export default function PresenterPage() {
               </span>
               <span className="text-gray-400 text-lg">
                 {connectionStatus === "reconnecting"
-                  ? "Reconnexion..."
-                  : `${stats.participantCount} participant${stats.participantCount !== 1 ? "s" : ""} connecté${stats.participantCount !== 1 ? "s" : ""}`}
+                  ? t("reconnecting", lang)
+                  : `${stats.participantCount} ${t("participantsConnected", lang)}`}
               </span>
             </div>
 
             {/* Total Clients - Hero Stat */}
             <div className="w-full">
               <StatCard
-                label="Total Clients"
+                label={t("totalClients", lang)}
                 value={stats.totalClients.toLocaleString()}
                 size="hero"
               />
@@ -202,12 +202,12 @@ export default function PresenterPage() {
             {/* Participants & Commission Row */}
             <div className="grid grid-cols-2 gap-2 w-full">
               <StatCard
-                label="Participants"
+                label={t("participants", lang)}
                 value={stats.participantCount}
                 size="medium"
               />
               <StatCard
-                label="Comm. Moy."
+                label={t("avgCommission", lang)}
                 value={`${stats.avgCommission.toLocaleString()} $`}
                 size="medium"
               />
@@ -216,17 +216,17 @@ export default function PresenterPage() {
             {/* Funnel Stats Row */}
             <div className="grid grid-cols-3 gap-2 w-full">
               <StatCard
-                label="Ouvertures (46%)"
+                label={t("openRate", lang)}
                 value={stats.totalOuvertures.toLocaleString()}
                 size="medium"
               />
               <StatCard
-                label="Engagement (14%)"
+                label={t("engagementRate", lang)}
                 value={stats.totalEngagement.toLocaleString()}
                 size="medium"
               />
               <StatCard
-                label="Ventes Pot. (5%)"
+                label={t("potentialSales", lang)}
                 value={stats.totalPotentielVentes.toLocaleString()}
                 size="medium"
               />
@@ -235,7 +235,7 @@ export default function PresenterPage() {
             {/* Revenu Potentiel - Hero Stat */}
             <div className="w-full">
               <StatCard
-                label="Revenu Potentiel Total"
+                label={t("potentialRevenue", lang)}
                 value={`${stats.totalPotentielRevenu.toLocaleString()} $`}
                 size="hero"
               />
@@ -249,12 +249,12 @@ export default function PresenterPage() {
                 className="w-full bg-[#FCB723] text-black font-bold text-base md:text-xl px-6 py-3 md:py-4 rounded-xl hover:bg-[#FCB723]/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {stats.redirectToLogitext
-                  ? "Redirection en cours..."
-                  : "Lancer la démo vidéo"}
+                  ? t("redirecting", lang)
+                  : t("launchDemo", lang)}
               </button>
               {stats.redirectToLogitext && (
                 <p className="text-sm text-gray-400 mt-2 text-center">
-                  Tous les participants sont redirigés vers la vidéo
+                  {t("allRedirected", lang)}
                 </p>
               )}
             </div>
