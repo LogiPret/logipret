@@ -3,18 +3,27 @@
 import React, { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import Link from "next/link";
+import { useLanguage, t } from "@/lib/i18n";
 
-const navItems = [
-  { label: "Features", href: "#features" },
-  { label: "How it Works", href: "#how-it-works" },
-  { label: "Pricing", href: "#pricing" },
-  { label: "Coming Soon", href: "#coming-soon" },
-];
+interface LogitextNavbarProps {
+  onOpenModal?: () => void;
+  onToggleLang?: () => void;
+}
 
-export const LogitextNavbar: React.FC = () => {
+export const LogitextNavbar: React.FC<LogitextNavbarProps> = ({
+  onOpenModal,
+  onToggleLang,
+}) => {
+  const { lang } = useLanguage();
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isInHowItWorks, setIsInHowItWorks] = useState(false);
+
+  const navItems = [
+    { labelKey: "features", href: "#features" },
+    { labelKey: "howItWorks", href: "#how-it-works" },
+    { labelKey: "comingSoon", href: "#coming-soon" },
+  ];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -78,23 +87,29 @@ export const LogitextNavbar: React.FC = () => {
           <div className="flex items-center gap-8">
             {navItems.map((item) => (
               <a
-                key={item.label}
+                key={item.labelKey}
                 href={item.href}
                 onClick={(e) => handleNavClick(e, item.href)}
                 className="text-sm font-medium text-white/80 hover:text-white transition-colors"
               >
-                {item.label}
+                {t("nav", item.labelKey, lang)}
               </a>
             ))}
           </div>
 
           {/* CTA & Language */}
           <div className="flex items-center gap-4">
-            <button className="text-sm font-medium text-white/60 hover:text-white transition-colors">
-              FR
+            <button
+              onClick={onToggleLang}
+              className="text-sm font-medium text-white/60 hover:text-white transition-colors"
+            >
+              {lang === "fr" ? "EN" : "FR"}
             </button>
-            <button className="bg-logitext-primary hover:bg-blue-600 text-white px-5 py-2 rounded-full text-sm font-medium transition-all shadow-[0_0_20px_rgba(10,132,255,0.3)] hover:shadow-[0_0_30px_rgba(10,132,255,0.5)]">
-              Get Started
+            <button
+              onClick={onOpenModal}
+              className="bg-logitext-primary hover:bg-blue-600 text-white px-5 py-2 rounded-full text-sm font-medium transition-all shadow-[0_0_20px_rgba(10,132,255,0.3)] hover:shadow-[0_0_30px_rgba(10,132,255,0.5)]"
+            >
+              {t("nav", "getStarted", lang)}
             </button>
           </div>
         </div>

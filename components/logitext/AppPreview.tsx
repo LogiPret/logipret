@@ -21,6 +21,7 @@ import {
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
+import { useLanguage, t } from "@/lib/i18n";
 
 // Contact names for sending animation (5 valid contacts from step 3)
 const CONTACTS_TO_SEND = [
@@ -42,6 +43,7 @@ export const AppPreview: React.FC<{
     | "done";
   className?: string;
 }> = ({ step = "csv", className = "" }) => {
+  const { lang } = useLanguage();
   // Animated sending state
   const [sentCount, setSentCount] = useState(0);
   const [sendingIndex, setSendingIndex] = useState(0);
@@ -98,10 +100,11 @@ export const AppPreview: React.FC<{
           <div className="w-3 h-3 rounded-full bg-[#28C840]" />
         </div>
         <div className="text-xs font-medium text-gray-400 font-mono">
-          LogiText v2.4 <span className="text-gray-600">|</span> Demo
+          LogiText v2.4 <span className="text-gray-600">|</span>{" "}
+          {t("preview", "demo", lang)}
         </div>
         <div className="text-[10px] bg-black/30 px-2 py-0.5 rounded text-gray-400">
-          FR
+          {lang.toUpperCase()}
         </div>
       </div>
 
@@ -117,7 +120,7 @@ export const AppPreview: React.FC<{
                 1
               </div>
               <h2 className="text-base md:text-xl font-semibold">
-                Sélectionnez vos contacts
+                {t("preview", "step1Title", lang)}
               </h2>
             </div>
 
@@ -127,17 +130,17 @@ export const AppPreview: React.FC<{
               </div>
               <div className="text-center">
                 <h3 className="text-sm md:text-lg font-medium text-white mb-1">
-                  Glissez votre fichier CSV
+                  {t("preview", "dragCsv", lang)}
                 </h3>
                 <p className="text-xs text-gray-500">
-                  ou cliquez pour parcourir
+                  {t("preview", "orClick", lang)}
                 </p>
               </div>
             </div>
 
             <div className="space-y-2">
               <h4 className="text-[10px] md:text-xs uppercase text-gray-500 font-semibold tracking-wider">
-                Fichiers recents :
+                {t("preview", "recentFiles", lang)}
               </h4>
               <div className="bg-[#2C2C2E] rounded-lg p-2 md:p-3 flex items-center justify-between border border-white/5">
                 <div className="flex items-center gap-2">
@@ -146,7 +149,7 @@ export const AppPreview: React.FC<{
                     clients_janvier.csv
                   </span>
                   <span className="text-[9px] md:text-[10px] bg-[#007AFF]/20 text-[#007AFF] px-1.5 py-0.5 rounded font-medium">
-                    6 contacts
+                    6 {t("preview", "contacts", lang)}
                   </span>
                 </div>
                 <span className="text-[10px] text-gray-500">2h</span>
@@ -165,45 +168,50 @@ export const AppPreview: React.FC<{
                 2
               </div>
               <h2 className="text-base md:text-xl font-semibold">
-                Rédigez votre message
+                {t("preview", "step2Title", lang)}
               </h2>
             </div>
 
             <div className="mb-3 md:mb-4">
               <label className="text-[10px] md:text-xs uppercase text-gray-500 font-semibold tracking-wider mb-1 md:mb-2 block">
-                Insérer :
+                {t("preview", "insert", lang)}
               </label>
               <div className="flex gap-2 flex-wrap">
-                {["Prénom", "Nom", "Entreprise", "Date"].map((v) => (
+                {[
+                  { key: "firstName", label: t("preview", "firstName", lang) },
+                  { key: "lastName", label: t("preview", "lastName", lang) },
+                  { key: "company", label: t("preview", "company", lang) },
+                  { key: "date", label: t("preview", "date", lang) },
+                ].map((v) => (
                   <button
-                    key={v}
+                    key={v.key}
                     className="px-2 md:px-3 py-1 md:py-1.5 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-md text-[10px] md:text-xs font-medium"
                   >
-                    {v}
+                    {v.label}
                   </button>
                 ))}
               </div>
             </div>
 
             <div className="flex-1 bg-[#1C1C1E] rounded-lg md:rounded-xl border border-white/20 p-2 md:p-4 font-mono text-xs md:text-sm leading-relaxed text-gray-300 relative shadow-inner">
-              Bonjour{" "}
+              {t("preview", "hello", lang)}{" "}
               <span className="bg-[#007AFF]/30 text-[#007AFF] px-1 py-0.5 rounded text-[10px] md:text-sm font-bold">
-                [Prénom]
+                [{t("preview", "firstName", lang)}]
               </span>
               ,<br />
-              Votre RDV du{" "}
+              {t("preview", "appointmentConfirmed", lang)}{" "}
               <span className="bg-[#007AFF]/30 text-[#007AFF] px-1 py-0.5 rounded text-[10px] md:text-sm font-bold">
-                [Date]
+                [{t("preview", "date", lang)}]
               </span>{" "}
-              est confirmé.
+              {t("preview", "isConfirmed", lang)}
             </div>
 
             <div className="mt-3 md:mt-6 flex justify-between items-center">
               <button className="text-gray-500 text-xs md:text-sm flex items-center gap-1">
-                <ChevronLeft size={12} /> Retour
+                <ChevronLeft size={12} /> {t("preview", "back", lang)}
               </button>
               <button className="bg-[#007AFF] text-white px-3 md:px-6 py-1.5 md:py-2 rounded-lg text-xs md:text-sm font-medium flex items-center gap-1">
-                Continuer <ChevronRight size={12} />
+                {t("preview", "continue", lang)} <ChevronRight size={12} />
               </button>
             </div>
           </div>
@@ -220,21 +228,23 @@ export const AppPreview: React.FC<{
                   3
                 </div>
                 <h2 className="text-xs md:text-lg font-semibold">
-                  Destinataires
+                  {t("preview", "step3Title", lang)}
                 </h2>
               </div>
               <div className="flex items-center justify-between text-[9px] md:text-xs text-gray-400">
                 <div className="flex gap-2">
-                  <span className="text-white font-medium">[Tout]</span>
-                  <span>[Aucun]</span>
+                  <span className="text-white font-medium">
+                    [{t("preview", "all", lang)}]
+                  </span>
+                  <span>[{t("preview", "none", lang)}]</span>
                   <span className="text-[#FFB300] ml-1">
-                    Suspects{" "}
+                    {t("preview", "suspects", lang)}{" "}
                     <span className="bg-[#FFB300] text-black px-1 rounded text-[8px] font-bold">
                       1
                     </span>
                   </span>
                   <span className="text-[#FF453A]">
-                    Invalides{" "}
+                    {t("preview", "invalids", lang)}{" "}
                     <span className="bg-[#FF453A] text-white px-1 rounded text-[8px] font-bold">
                       1
                     </span>
@@ -253,8 +263,12 @@ export const AppPreview: React.FC<{
                       ☑
                     </th>
                     <th className="p-1 w-5 border-b border-white/5"></th>
-                    <th className="p-1 border-b border-white/5">Prenom</th>
-                    <th className="p-1 border-b border-white/5">Nom</th>
+                    <th className="p-1 border-b border-white/5">
+                      {t("preview", "firstName", lang)}
+                    </th>
+                    <th className="p-1 border-b border-white/5">
+                      {t("preview", "lastName", lang)}
+                    </th>
                     <th className="p-1 border-b border-white/5">Tel</th>
                   </tr>
                 </thead>
@@ -333,7 +347,7 @@ export const AppPreview: React.FC<{
                     <td className="p-1 text-white">Robert</td>
                     <td className="p-1 text-white">Dupont</td>
                     <td className="p-1 text-[#FF453A] italic text-[8px]">
-                      (vide)
+                      {t("preview", "empty", lang)}
                     </td>
                   </tr>
                 </tbody>
@@ -341,10 +355,10 @@ export const AppPreview: React.FC<{
             </div>
             <div className="p-2 border-t border-white/10 shrink-0 flex justify-between items-center bg-[#1C1C1E]">
               <button className="bg-white/10 text-white px-2 py-1 rounded text-[9px] font-medium flex items-center gap-1">
-                <Edit size={9} /> Editer
+                <Edit size={9} /> {t("preview", "edit", lang)}
               </button>
               <button className="bg-[#30D158] text-white px-2 py-1 rounded text-[9px] font-bold flex items-center gap-1">
-                <Send size={9} /> Envoyer (5)
+                <Send size={9} /> {t("preview", "send", lang)} (5)
               </button>
             </div>
           </div>
@@ -361,7 +375,7 @@ export const AppPreview: React.FC<{
                   3
                 </div>
                 <h2 className="text-xs md:text-lg font-semibold">
-                  Destinataires
+                  {t("preview", "step3Title", lang)}
                 </h2>
               </div>
             </div>
@@ -373,8 +387,12 @@ export const AppPreview: React.FC<{
                       ☑
                     </th>
                     <th className="p-1 w-5 border-b border-white/5"></th>
-                    <th className="p-1 border-b border-white/5">Prenom</th>
-                    <th className="p-1 border-b border-white/5">Nom</th>
+                    <th className="p-1 border-b border-white/5">
+                      {t("preview", "firstName", lang)}
+                    </th>
+                    <th className="p-1 border-b border-white/5">
+                      {t("preview", "lastName", lang)}
+                    </th>
                     <th className="p-1 border-b border-white/5">Tel</th>
                   </tr>
                 </thead>
@@ -426,7 +444,7 @@ export const AppPreview: React.FC<{
                       {/* Tooltip positioned next to the field */}
                       <div className="absolute left-full ml-1 top-1/2 -translate-y-1/2 bg-[#2C2C2E] border-l-2 border-[#FFB300] rounded px-1.5 py-1 shadow-lg z-20 whitespace-nowrap">
                         <div className="text-[#FFB300] text-[7px] font-semibold">
-                          Caractere suspect
+                          {t("preview", "suspectChar", lang)}
                         </div>
                         <div className="text-[9px] bg-[#1C1C1E] px-1 rounded mt-0.5">
                           Martin
@@ -480,15 +498,15 @@ export const AppPreview: React.FC<{
                           borderRadius: "2px",
                         }}
                       >
-                        (vide)
+                        {t("preview", "empty", lang)}
                       </span>
                       {/* Tooltip positioned next to the field */}
                       <div className="absolute left-full ml-1 top-1/2 -translate-y-1/2 bg-[#2C2C2E] border-l-2 border-[#FF453A] rounded px-1.5 py-1 shadow-lg z-20 whitespace-nowrap">
                         <div className="text-[#FF453A] text-[7px] font-semibold">
-                          Champ manquant
+                          {t("preview", "missingField", lang)}
                         </div>
                         <div className="text-gray-400 text-[6px]">
-                          Telephone requis
+                          {t("preview", "phoneRequired", lang)}
                         </div>
                       </div>
                     </td>
@@ -498,10 +516,10 @@ export const AppPreview: React.FC<{
             </div>
             <div className="p-2 border-t border-white/10 shrink-0 flex justify-center gap-2 bg-[#1C1C1E]">
               <button className="bg-[#007AFF] text-white px-2 py-1 rounded text-[9px] font-medium flex items-center gap-1">
-                <Edit size={9} /> Corriger
+                <Edit size={9} /> {t("preview", "correct", lang)}
               </button>
               <button className="bg-white/10 text-white px-2 py-1 rounded text-[9px] font-medium">
-                Ignorer
+                {t("preview", "ignore", lang)}
               </button>
             </div>
           </div>
@@ -518,10 +536,10 @@ export const AppPreview: React.FC<{
                   3
                 </div>
                 <h2 className="text-xs md:text-lg font-semibold">
-                  Mode Edition
+                  {t("preview", "editMode", lang)}
                 </h2>
                 <span className="text-[8px] bg-[#007AFF]/20 text-[#007AFF] px-1 rounded ml-1">
-                  ACTIF
+                  {t("preview", "active", lang)}
                 </span>
               </div>
             </div>
@@ -533,8 +551,12 @@ export const AppPreview: React.FC<{
                       ☑
                     </th>
                     <th className="p-1 w-5 border-b border-white/5"></th>
-                    <th className="p-1 border-b border-white/5">Prenom</th>
-                    <th className="p-1 border-b border-white/5">Nom</th>
+                    <th className="p-1 border-b border-white/5">
+                      {t("preview", "firstName", lang)}
+                    </th>
+                    <th className="p-1 border-b border-white/5">
+                      {t("preview", "lastName", lang)}
+                    </th>
                     <th className="p-1 border-b border-white/5">Tel</th>
                   </tr>
                 </thead>
@@ -621,10 +643,12 @@ export const AppPreview: React.FC<{
                       {/* Action buttons below */}
                       <div className="absolute top-full left-0 mt-0.5 flex gap-1 z-20">
                         <button className="bg-[#2C2C2E] text-gray-300 px-1 py-0.5 rounded text-[6px] flex items-center gap-0.5 shadow whitespace-nowrap">
-                          Annuler <span className="opacity-50">Esc</span>
+                          {t("preview", "cancel", lang)}{" "}
+                          <span className="opacity-50">Esc</span>
                         </button>
                         <button className="bg-[#30D158] text-white px-1 py-0.5 rounded text-[6px] flex items-center gap-0.5 shadow whitespace-nowrap">
-                          Sauver <span className="opacity-70">Enter</span>
+                          {t("preview", "save", lang)}{" "}
+                          <span className="opacity-70">Enter</span>
                         </button>
                       </div>
                     </td>
@@ -634,7 +658,7 @@ export const AppPreview: React.FC<{
             </div>
             <div className="p-2 border-t border-white/10 shrink-0 bg-[#1C1C1E]">
               <div className="text-center text-[8px] text-gray-400">
-                Cliquez sur une cellule pour modifier - Entree pour sauvegarder
+                {t("preview", "clickToEdit", lang)}
               </div>
             </div>
           </div>
@@ -654,8 +678,8 @@ export const AppPreview: React.FC<{
                   />
                 </div>
                 {sentCount < CONTACTS_TO_SEND.length
-                  ? "Envoi..."
-                  : "Envoi termine"}
+                  ? t("preview", "sending", lang)
+                  : t("preview", "sendComplete", lang)}
               </h2>
               <span className="text-[10px] md:text-xs font-mono text-blue-400 bg-blue-400/10 px-1.5 py-0.5 rounded">
                 {sentCount}/{CONTACTS_TO_SEND.length}
@@ -714,7 +738,7 @@ export const AppPreview: React.FC<{
             </div>
 
             <button className="mt-3 md:mt-6 w-full py-2 bg-[#FF9F0A]/10 border border-[#FF9F0A]/30 text-[#FF9F0A] rounded-lg text-xs font-medium flex justify-center items-center gap-1">
-              <Pause size={12} /> Pause
+              <Pause size={12} /> {t("preview", "pause", lang)}
             </button>
           </div>
         )}
@@ -737,10 +761,10 @@ export const AppPreview: React.FC<{
             </div>
 
             <h2 className="text-xl md:text-3xl font-bold text-white mb-1 md:mb-2">
-              Termine !
+              {t("preview", "done", lang)}
             </h2>
             <p className="text-xs md:text-base text-gray-400 mb-4 md:mb-8">
-              6 contacts traites.
+              6 {t("preview", "contactsProcessed", lang)}
             </p>
 
             <div className="grid grid-cols-3 gap-2 md:gap-4 w-full mb-4 md:mb-8">
@@ -749,7 +773,7 @@ export const AppPreview: React.FC<{
                   5
                 </span>
                 <span className="text-[8px] md:text-[10px] uppercase font-bold text-gray-500">
-                  Envoyes
+                  {t("preview", "sent", lang)}
                 </span>
               </div>
               <div className="bg-[#2C2C2E] p-2 md:p-4 rounded-lg md:rounded-xl border border-white/5 flex flex-col items-center">
@@ -757,7 +781,7 @@ export const AppPreview: React.FC<{
                   0
                 </span>
                 <span className="text-[8px] md:text-[10px] uppercase font-bold text-gray-500">
-                  Erreur
+                  {t("preview", "error", lang)}
                 </span>
               </div>
               <div className="bg-[#2C2C2E] p-2 md:p-4 rounded-lg md:rounded-xl border border-white/5 flex flex-col items-center">
@@ -765,17 +789,17 @@ export const AppPreview: React.FC<{
                   1
                 </span>
                 <span className="text-[8px] md:text-[10px] uppercase font-bold text-gray-500">
-                  Invalide
+                  {t("preview", "invalid", lang)}
                 </span>
               </div>
             </div>
 
             <div className="flex gap-2 w-full">
               <button className="flex-1 py-2 md:py-3 bg-[#2C2C2E] rounded-lg text-xs md:text-sm text-gray-300 font-medium border border-white/5">
-                Logs
+                {t("preview", "logs", lang)}
               </button>
               <button className="flex-1 py-2 md:py-3 bg-[#007AFF] rounded-lg text-xs md:text-sm text-white font-bold">
-                Fermer
+                {t("preview", "close", lang)}
               </button>
             </div>
           </div>

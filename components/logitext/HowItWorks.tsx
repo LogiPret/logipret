@@ -11,6 +11,7 @@ import {
   AlertTriangle,
   Edit3,
 } from "lucide-react";
+import { useLanguage, t } from "@/lib/i18n";
 
 type StepId =
   | "csv"
@@ -21,10 +22,10 @@ type StepId =
   | "sending"
   | "done";
 
-const steps: {
+const stepsMeta: {
   id: StepId;
-  title: string;
-  description: string;
+  titleKey: string;
+  descKey: string;
   icon: React.ComponentType<{ size?: number }>;
   scale: number;
   rotateY: number;
@@ -32,9 +33,8 @@ const steps: {
 }[] = [
   {
     id: "csv",
-    title: "1. Importez vos contacts",
-    description:
-      "Glissez votre fichier CSV. LogiText detecte automatiquement les colonnes et nettoie les numeros de telephone.",
+    titleKey: "steps.csv.title",
+    descKey: "steps.csv.desc",
     icon: Upload,
     scale: 0.85,
     rotateY: -8,
@@ -42,9 +42,8 @@ const steps: {
   },
   {
     id: "compose",
-    title: "2. Redigez votre message",
-    description:
-      "Creez des messages personnalises avec des variables dynamiques comme [Prenom], [Date] ou [Entreprise].",
+    titleKey: "steps.compose.title",
+    descKey: "steps.compose.desc",
     icon: MessageSquare,
     scale: 0.9,
     rotateY: 6,
@@ -52,9 +51,8 @@ const steps: {
   },
   {
     id: "crm",
-    title: "3. Validez la liste",
-    description:
-      "Verifiez chaque contact dans le CRM integre. Les contacts invalides et suspects sont signales automatiquement.",
+    titleKey: "steps.crm.title",
+    descKey: "steps.crm.desc",
     icon: Users,
     scale: 0.88,
     rotateY: -5,
@@ -62,9 +60,8 @@ const steps: {
   },
   {
     id: "crm-hover",
-    title: "3b. Detectez les erreurs",
-    description:
-      "Survolez un contact pour voir les details. Champs manquants en rouge, caracteres suspects en orange.",
+    titleKey: "steps.crmHover.title",
+    descKey: "steps.crmHover.desc",
     icon: AlertTriangle,
     scale: 0.9,
     rotateY: -3,
@@ -72,9 +69,8 @@ const steps: {
   },
   {
     id: "crm-edit",
-    title: "3c. Corrigez en ligne",
-    description:
-      "Editez directement les champs problematiques. Sauvegardez avec Entree, annulez avec Echap.",
+    titleKey: "steps.crmEdit.title",
+    descKey: "steps.crmEdit.desc",
     icon: Edit3,
     scale: 0.92,
     rotateY: 4,
@@ -82,9 +78,8 @@ const steps: {
   },
   {
     id: "sending",
-    title: "4. Suivez l'envoi",
-    description:
-      "Visualisez la progression en temps reel. Le systeme optimise le debit pour garantir la delivrabilite.",
+    titleKey: "steps.sending.title",
+    descKey: "steps.sending.desc",
     icon: Send,
     scale: 0.92,
     rotateY: 7,
@@ -92,9 +87,8 @@ const steps: {
   },
   {
     id: "done",
-    title: "5. Bilan complet",
-    description:
-      "Obtenez un rapport detaille une fois la campagne terminee. Voyez qui a recu le message et les erreurs eventuelles.",
+    titleKey: "steps.done.title",
+    descKey: "steps.done.desc",
     icon: CheckCircle,
     scale: 1,
     rotateY: 0,
@@ -103,6 +97,7 @@ const steps: {
 ];
 
 export const HowItWorks = () => {
+  const { lang } = useLanguage();
   const [activeStep, setActiveStep] = useState<StepId>("csv");
   const [activeIndex, setActiveIndex] = useState(0);
   const [progress, setProgress] = useState(0);
@@ -152,20 +147,20 @@ export const HowItWorks = () => {
             const progressInStep = (triggerPoint - absoluteTop) / height;
             // Total progress = completed steps + partial current step
             stepProgress =
-              ((index + Math.min(progressInStep, 1)) / steps.length) * 100;
+              ((index + Math.min(progressInStep, 1)) / stepsMeta.length) * 100;
           } else if (triggerPoint >= absoluteBottom) {
             // Past this step
             foundIndex = Math.max(foundIndex, index);
             stepProgress = Math.max(
               stepProgress,
-              ((index + 1) / steps.length) * 100,
+              ((index + 1) / stepsMeta.length) * 100,
             );
           }
         }
       });
 
-      if (steps[foundIndex]) {
-        const stepId = steps[foundIndex].id;
+      if (stepsMeta[foundIndex]) {
+        const stepId = stepsMeta[foundIndex].id;
         if (activeStep !== stepId) {
           setActiveStep(stepId);
           setActiveIndex(foundIndex);
@@ -183,7 +178,7 @@ export const HowItWorks = () => {
     };
   }, [activeStep]);
 
-  const currentStep = steps[activeIndex];
+  const currentStep = stepsMeta[activeIndex];
 
   // Map step IDs to AppPreview step prop
   const getPreviewStep = (
@@ -208,11 +203,10 @@ export const HowItWorks = () => {
       <div className="max-w-7xl mx-auto px-4 md:px-12 relative z-10">
         <div className="text-center mb-24">
           <h2 className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 mb-6">
-            Une interface intuitive
+            {t("howItWorks", "title", lang)}
           </h2>
           <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-            Concu pour etre simple, rapide et efficace. Aucune formation
-            necessaire.
+            {t("howItWorks", "subtitle", lang)}
           </p>
         </div>
 
@@ -231,7 +225,7 @@ export const HowItWorks = () => {
             />
             {/* Step dots */}
             <div className="absolute inset-0 flex flex-col justify-between py-0">
-              {steps.map((step, idx) => (
+              {stepsMeta.map((step, idx) => (
                 <div
                   key={step.id}
                   className={`w-2 h-2 -ml-[3px] rounded-full transition-all duration-150 ${
@@ -280,7 +274,7 @@ export const HowItWorks = () => {
 
           {/* Scrolling Text Content - Bottom half */}
           <div className="relative z-10 pl-6">
-            {steps.map((step, index) => (
+            {stepsMeta.map((step, index) => (
               <div
                 key={step.id}
                 ref={(el: HTMLDivElement | null) => {
@@ -310,7 +304,7 @@ export const HowItWorks = () => {
                         activeStep === step.id ? "text-white" : "text-gray-500"
                       }`}
                     >
-                      {step.title}
+                      {t("howItWorks", step.titleKey, lang)}
                     </h3>
                   </div>
                   <p
@@ -318,7 +312,7 @@ export const HowItWorks = () => {
                       activeStep === step.id ? "text-gray-300" : "text-gray-600"
                     }`}
                   >
-                    {step.description}
+                    {t("howItWorks", step.descKey, lang)}
                   </p>
                 </div>
               </div>
@@ -330,7 +324,7 @@ export const HowItWorks = () => {
         <div className="hidden lg:grid grid-cols-2 gap-16 items-start">
           {/* Left: Text Steps */}
           <div className="space-y-[20vh] py-[10vh]">
-            {steps.map((step, index) => (
+            {stepsMeta.map((step, index) => (
               <div
                 key={step.id}
                 ref={(el: HTMLDivElement | null) => {
@@ -355,11 +349,11 @@ export const HowItWorks = () => {
                   <h3
                     className={`text-2xl font-bold ${activeStep === step.id ? "text-white" : "text-gray-500"}`}
                   >
-                    {step.title}
+                    {t("howItWorks", step.titleKey, lang)}
                   </h3>
                 </div>
                 <p className="text-lg text-gray-400 leading-relaxed pl-16">
-                  {step.description}
+                  {t("howItWorks", step.descKey, lang)}
                 </p>
               </div>
             ))}
