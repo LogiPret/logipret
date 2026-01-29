@@ -67,11 +67,15 @@ export default function JoinPage() {
     setIsSubmitting(true);
 
     try {
+      // Check if user already has a participant ID from a previous session
+      const existingId = localStorage.getItem("clickon_participant_id");
+
       const res = await fetch("/api/presentation", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           action: "join",
+          participantId: existingId || undefined,
           clients: parseInt(clients) || 0,
           avgCommission: parseInt(avgCommission) || 0,
         }),
@@ -79,6 +83,8 @@ export default function JoinPage() {
 
       const data = await res.json();
       if (data.success) {
+        // Store the participant ID for future page reloads
+        localStorage.setItem("clickon_participant_id", data.participantId);
         setPersonalStats(data.personalStats);
         setStep("stats");
       }

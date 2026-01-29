@@ -24,13 +24,21 @@ interface PresentationState {
   createdAt: number;
 }
 
-// Global state - single source of truth for the entire presentation
-const state: PresentationState = {
-  participants: new Map(),
-  isActive: true,
-  redirectToLogitext: false,
-  createdAt: Date.now(),
+// Use globalThis to persist state across hot reloads in development
+const globalState = globalThis as typeof globalThis & {
+  presentationState?: PresentationState;
 };
+
+if (!globalState.presentationState) {
+  globalState.presentationState = {
+    participants: new Map(),
+    isActive: true,
+    redirectToLogitext: false,
+    createdAt: Date.now(),
+  };
+}
+
+const state = globalState.presentationState;
 
 const OPEN_RATE = 0.46; // 46%
 const ENGAGEMENT_RATE = 0.14; // 14%

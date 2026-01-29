@@ -41,7 +41,19 @@ export default function PresenterPage() {
       });
       if (res.ok) {
         const data = await res.json();
-        setStats(data);
+        // Only update if we have valid data to prevent flash to 0
+        setStats((prev) => {
+          // If new data has participants or is explicitly inactive (reset), use it
+          // Otherwise keep previous values to prevent flash
+          if (
+            data.participantCount > 0 ||
+            !data.isActive ||
+            prev.participantCount === 0
+          ) {
+            return data;
+          }
+          return prev;
+        });
         setConnectionStatus("connected");
         lastUpdateRef.current = Date.now();
       }
@@ -102,19 +114,19 @@ export default function PresenterPage() {
       }}
     >
       {/* Header */}
-      <header className="border-b border-[#333] py-6">
-        <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-[#FCB723] rounded-lg flex items-center justify-center">
-              <span className="text-black font-bold text-xl">C</span>
+      <header className="border-b border-[#333] py-3 lg:py-4">
+        <div className="max-w-7xl mx-auto px-4 lg:px-6 flex items-center justify-between">
+          <div className="flex items-center gap-2 lg:gap-3">
+            <div className="w-8 h-8 lg:w-10 lg:h-10 bg-[#FCB723] rounded-lg flex items-center justify-center">
+              <span className="text-black font-bold text-lg lg:text-xl">C</span>
             </div>
-            <span className="text-xl font-bold tracking-tight">
+            <span className="text-lg lg:text-xl font-bold tracking-tight">
               ClickOn Solutions
             </span>
           </div>
           <button
             onClick={handleReset}
-            className="text-sm text-gray-400 hover:text-white transition-colors"
+            className="text-xs lg:text-sm text-gray-400 hover:text-white transition-colors"
           >
             Reset Session
           </button>
@@ -122,7 +134,7 @@ export default function PresenterPage() {
       </header>
 
       {/* Main Content - Split Layout */}
-      <main className="h-[calc(100vh-88px)] flex flex-col lg:flex-row">
+      <main className="h-[calc(100vh-56px)] lg:h-[calc(100vh-72px)] flex flex-col lg:flex-row">
         {/* Left Side - QR Code */}
         <div className="lg:w-1/2 flex flex-col items-center justify-center p-3 border-b lg:border-b-0 lg:border-r border-[#333] overflow-hidden">
           <div className="inline-flex items-center gap-2 rounded-full bg-[#FCB723] px-3 py-1 text-xs font-bold tracking-wide text-black uppercase mb-2">
@@ -156,80 +168,94 @@ export default function PresenterPage() {
         </div>
 
         {/* Right Side - Stats */}
-        <div className="lg:w-1/2 flex flex-col p-8 overflow-y-auto">
-          {/* Live Indicator */}
-          <div className="flex items-center gap-3 mb-6">
-            <span className="relative flex h-3 w-3">
-              <span
-                className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${connectionStatus === "connected" ? "bg-[#FCB723]" : "bg-red-500"}`}
-              ></span>
-              <span
-                className={`relative inline-flex rounded-full h-3 w-3 ${connectionStatus === "connected" ? "bg-[#FCB723]" : "bg-red-500"}`}
-              ></span>
-            </span>
-            <span className="text-gray-400">
-              {connectionStatus === "reconnecting"
-                ? "Reconnexion..."
-                : `${stats.participantCount} participant${stats.participantCount !== 1 ? "s" : ""} connecté${stats.participantCount !== 1 ? "s" : ""}`}
-            </span>
-          </div>
+        <div className="lg:w-1/2 flex flex-col p-2 lg:p-4 h-full">
+          {/* Stats Container - Fits all content */}
+          <div className="flex flex-col items-center justify-between w-full h-full">
+            {/* Live Indicator */}
+            <div className="flex items-center justify-center gap-3 mb-2 w-full">
+              <span className="relative flex h-4 w-4">
+                <span
+                  className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${connectionStatus === "connected" ? "bg-[#FCB723]" : "bg-red-500"}`}
+                ></span>
+                <span
+                  className={`relative inline-flex rounded-full h-4 w-4 ${connectionStatus === "connected" ? "bg-[#FCB723]" : "bg-red-500"}`}
+                ></span>
+              </span>
+              <span className="text-gray-400 text-lg">
+                {connectionStatus === "reconnecting"
+                  ? "Reconnexion..."
+                  : `${stats.participantCount} participant${stats.participantCount !== 1 ? "s" : ""} connecté${stats.participantCount !== 1 ? "s" : ""}`}
+              </span>
+            </div>
 
-          {/* Stats Grid */}
-          <div className="grid grid-cols-2 gap-4 mb-4">
-            <StatCard label="Participants" value={stats.participantCount} />
-            <StatCard
-              label="Total Clients"
-              value={stats.totalClients.toLocaleString()}
-            />
-          </div>
+            {/* Total Clients - Hero Stat */}
+            <div className="w-full">
+              <StatCard
+                label="Total Clients"
+                value={stats.totalClients.toLocaleString()}
+                size="hero"
+              />
+            </div>
 
-          <div className="grid grid-cols-2 gap-4 mb-4">
-            <StatCard
-              label="Commission Moy."
-              value={`${stats.avgCommission.toLocaleString()} $`}
-            />
-            <StatCard
-              label="Ouvertures (46%)"
-              value={stats.totalOuvertures.toLocaleString()}
-            />
-          </div>
+            {/* Participants & Commission Row */}
+            <div className="grid grid-cols-2 gap-2 w-full">
+              <StatCard
+                label="Participants"
+                value={stats.participantCount}
+                size="medium"
+              />
+              <StatCard
+                label="Comm. Moy."
+                value={`${stats.avgCommission.toLocaleString()} $`}
+                size="medium"
+              />
+            </div>
 
-          <div className="grid grid-cols-2 gap-4 mb-4">
-            <StatCard
-              label="Engagement (14%)"
-              value={stats.totalEngagement.toLocaleString()}
-            />
-            <StatCard
-              label="Ventes Pot. (5%)"
-              value={stats.totalPotentielVentes.toLocaleString()}
-            />
-          </div>
+            {/* Funnel Stats Row */}
+            <div className="grid grid-cols-3 gap-2 w-full">
+              <StatCard
+                label="Ouvertures (46%)"
+                value={stats.totalOuvertures.toLocaleString()}
+                size="medium"
+              />
+              <StatCard
+                label="Engagement (14%)"
+                value={stats.totalEngagement.toLocaleString()}
+                size="medium"
+              />
+              <StatCard
+                label="Ventes Pot. (5%)"
+                value={stats.totalPotentielVentes.toLocaleString()}
+                size="medium"
+              />
+            </div>
 
-          {/* Highlighted Revenue Card */}
-          <div className="mb-6">
-            <StatCard
-              label="Revenu Potentiel Total"
-              value={`${stats.totalPotentielRevenu.toLocaleString()} $`}
-              highlight
-            />
-          </div>
+            {/* Revenu Potentiel - Hero Stat */}
+            <div className="w-full">
+              <StatCard
+                label="Revenu Potentiel Total"
+                value={`${stats.totalPotentielRevenu.toLocaleString()} $`}
+                size="hero"
+              />
+            </div>
 
-          {/* Redirect Button */}
-          <div className="mt-auto">
-            <button
-              onClick={handleRedirect}
-              disabled={stats.redirectToLogitext}
-              className="w-full bg-[#FCB723] text-black font-bold text-xl px-12 py-5 rounded-xl hover:bg-[#FCB723]/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {stats.redirectToLogitext
-                ? "Redirection en cours..."
-                : "Continuer vers la démo Logitext"}
-            </button>
-            {stats.redirectToLogitext && (
-              <p className="text-sm text-gray-400 mt-3 text-center">
-                Tous les participants sont redirigés vers logipret.ca/logitext
-              </p>
-            )}
+            {/* Redirect Button */}
+            <div className="w-full mt-2">
+              <button
+                onClick={handleRedirect}
+                disabled={stats.redirectToLogitext}
+                className="w-full bg-[#FCB723] text-black font-bold text-base md:text-xl px-6 py-3 md:py-4 rounded-xl hover:bg-[#FCB723]/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {stats.redirectToLogitext
+                  ? "Redirection en cours..."
+                  : "Continuer vers la démo Logitext"}
+              </button>
+              {stats.redirectToLogitext && (
+                <p className="text-sm text-gray-400 mt-2 text-center">
+                  Tous les participants sont redirigés vers logipret.ca/logitext
+                </p>
+              )}
+            </div>
           </div>
         </div>
       </main>
@@ -240,26 +266,41 @@ export default function PresenterPage() {
 function StatCard({
   label,
   value,
-  highlight = false,
+  size = "default",
 }: {
   label: string;
   value: string | number;
-  highlight?: boolean;
+  size?: "small" | "medium" | "default" | "hero";
 }) {
+  const isHero = size === "hero";
+  const isMedium = size === "medium";
+
   return (
     <div
-      className={`rounded-2xl p-6 border transition-all ${
-        highlight
-          ? "bg-[#FCB723]/10 border-[#FCB723]/30"
-          : "bg-[#121212] border-[#333]"
+      className={`rounded-xl lg:rounded-2xl border transition-all text-center ${
+        isHero
+          ? "bg-gradient-to-br from-[#FCB723]/20 via-[#FCB723]/10 to-transparent border-[#FCB723]/50 p-2 md:p-4 lg:p-6 shadow-[0_0_60px_rgba(252,183,35,0.2)]"
+          : isMedium
+            ? "bg-[#121212] border-[#333] p-1.5 md:p-3 lg:p-4"
+            : "bg-[#121212] border-[#333] p-3"
       }`}
     >
-      <p className="text-sm text-gray-400 uppercase tracking-wide mb-2">
+      <p
+        className={`uppercase tracking-wide mb-0.5 ${
+          isHero
+            ? "text-[#FCB723]/80 text-[10px] md:text-xs lg:text-base font-semibold"
+            : "text-gray-400 text-[8px] md:text-[10px] lg:text-xs"
+        }`}
+      >
         {label}
       </p>
       <p
-        className={`text-4xl font-bold ${
-          highlight ? "text-[#FCB723]" : "text-white"
+        className={`font-bold leading-none ${
+          isHero
+            ? "text-2xl md:text-4xl lg:text-6xl xl:text-7xl text-[#FCB723]"
+            : isMedium
+              ? "text-lg md:text-xl lg:text-2xl xl:text-3xl text-white"
+              : "text-xl text-white"
         }`}
       >
         {value}
