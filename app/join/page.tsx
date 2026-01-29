@@ -32,7 +32,7 @@ export default function JoinPage() {
         if (data.redirectToLogitext && step !== "form") {
           setStep("redirecting");
           // Redirect immediately
-          window.location.href = "https://www.logipret.ca/logitext";
+          window.location.href = "/logitext";
         }
       }
     } catch (err) {

@@ -95,6 +95,8 @@ export default function PresenterPage() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ action: "redirect" }),
     });
+    // Redirect presenter to demo page
+    window.location.href = "/demo";
   };
 
   const handleReset = async () => {
@@ -248,11 +250,11 @@ export default function PresenterPage() {
               >
                 {stats.redirectToLogitext
                   ? "Redirection en cours..."
-                  : "Continuer vers la démo Logitext"}
+                  : "Lancer la démo vidéo"}
               </button>
               {stats.redirectToLogitext && (
                 <p className="text-sm text-gray-400 mt-2 text-center">
-                  Tous les participants sont redirigés vers logipret.ca/logitext
+                  Tous les participants sont redirigés vers la vidéo
                 </p>
               )}
             </div>
