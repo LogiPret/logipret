@@ -123,24 +123,36 @@ export const LogitextNavbar: React.FC<LogitextNavbarProps> = ({
             : "opacity-0 -translate-y-full pointer-events-none"
         }`}
       >
-        <div className="px-4">
+        <div className="px-4 flex items-center justify-between">
           <Link
             href="/logitext"
             className="text-lg font-bold text-white tracking-tight"
           >
             Logi<span className="text-logitext-primary">Text</span>
           </Link>
+          <button
+            onClick={onToggleLang}
+            className="text-sm font-medium text-white/60 hover:text-white transition-colors"
+          >
+            {lang === "fr" ? "EN" : "FR"}
+          </button>
         </div>
       </div>
 
       {/* Mobile - Initial navbar in hero (not fixed) */}
-      <div className="md:hidden absolute top-0 left-0 right-0 z-40 py-4 px-4">
+      <div className="md:hidden absolute top-0 left-0 right-0 z-40 py-4 px-4 flex items-center justify-between">
         <Link
           href="/logitext"
           className="text-2xl font-bold text-white tracking-tight"
         >
           Logi<span className="text-logitext-primary">Text</span>
         </Link>
+        <button
+          onClick={onToggleLang}
+          className="text-sm font-medium text-white/60 hover:text-white transition-colors"
+        >
+          {lang === "fr" ? "EN" : "FR"}
+        </button>
       </div>
     </>
   );
