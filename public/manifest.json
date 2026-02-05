@@ -1,0 +1,23 @@
+{
+  "name": "Logipret",
+  "short_name": "Logipret",
+  "description": "Marketing & Software Solutions for Real Estate Brokers",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#001133",
+  "theme_color": "#0055FF",
+  "icons": [
+    {
+      "src": "/logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
