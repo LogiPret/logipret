@@ -149,7 +149,42 @@ export default function PresenterPage() {
     "connected" | "reconnecting"
   >("connected");
   const pollIntervalRef = useRef<NodeJS.Timeout | null>(null);
-  const lastUpdateRef = useRef<number>(Date.now());
+  const serverVersionRef = useRef<number>(-1);
+  const latestDataRef = useRef<Stats | null>(null);
+  const lastDisplayUpdateRef = useRef<number>(0);
+  const displayTimerRef = useRef<NodeJS.Timeout | null>(null);
+
+  const POLL_INTERVAL = 3000;
+  const DISPLAY_INTERVAL_LOW = 3000;
+  const DISPLAY_INTERVAL_HIGH = 5000;
+  const LOW_PARTICIPANT_THRESHOLD = 5;
+
+  const applyDisplayUpdate = useCallback((data: Stats) => {
+    setStats((prev) => {
+      if (data.isActive && prev.participantCount > 0) {
+        return {
+          ...data,
+          participantCount: Math.max(
+            data.participantCount,
+            prev.participantCount,
+          ),
+          totalClients: Math.max(data.totalClients, prev.totalClients),
+          totalOuvertures: Math.max(data.totalOuvertures, prev.totalOuvertures),
+          totalEngagement: Math.max(data.totalEngagement, prev.totalEngagement),
+          totalPotentielVentes: Math.max(
+            data.totalPotentielVentes,
+            prev.totalPotentielVentes,
+          ),
+          totalPotentielRevenu: Math.max(
+            data.totalPotentielRevenu,
+            prev.totalPotentielRevenu,
+          ),
+        };
+      }
+      return data;
+    });
+    lastDisplayUpdateRef.current = Date.now();
+  }, []);
 
   const fetchStats = useCallback(async () => {
     try {
@@ -159,29 +194,61 @@ export default function PresenterPage() {
       });
       if (res.ok) {
         const data = await res.json();
-        setStats((prev) => {
-          if (
-            data.participantCount > 0 ||
-            !data.isActive ||
-            prev.participantCount === 0
-          ) {
-            return data;
+        const version = data.version ?? 0;
+
+        if (version < serverVersionRef.current) return;
+        serverVersionRef.current = version;
+
+        const statsData: Stats = {
+          participantCount: data.participantCount,
+          totalClients: data.totalClients,
+          totalOuvertures: data.totalOuvertures,
+          totalEngagement: data.totalEngagement,
+          totalPotentielVentes: data.totalPotentielVentes,
+          totalPotentielRevenu: data.totalPotentielRevenu,
+          avgCommission: data.avgCommission,
+          redirectToLogitext: data.redirectToLogitext,
+          isActive: data.isActive,
+        };
+
+        latestDataRef.current = statsData;
+
+        const displayInterval =
+          data.participantCount < LOW_PARTICIPANT_THRESHOLD
+            ? DISPLAY_INTERVAL_LOW
+            : DISPLAY_INTERVAL_HIGH;
+
+        const now = Date.now();
+        const elapsed = now - lastDisplayUpdateRef.current;
+
+        if (elapsed >= displayInterval) {
+          applyDisplayUpdate(statsData);
+          if (displayTimerRef.current) {
+            clearTimeout(displayTimerRef.current);
+            displayTimerRef.current = null;
           }
-          return prev;
-        });
+        } else if (!displayTimerRef.current) {
+          const delay = displayInterval - elapsed;
+          displayTimerRef.current = setTimeout(() => {
+            if (latestDataRef.current) {
+              applyDisplayUpdate(latestDataRef.current);
+            }
+            displayTimerRef.current = null;
+          }, delay);
+        }
+
         setConnectionStatus("connected");
-        lastUpdateRef.current = Date.now();
       }
     } catch (err) {
       console.error("Failed to fetch stats:", err);
       setConnectionStatus("reconnecting");
     }
-  }, []);
+  }, [applyDisplayUpdate]);
 
   useEffect(() => {
     setJoinUrl(`${window.location.origin}/join`);
     fetchStats();
-    pollIntervalRef.current = setInterval(fetchStats, 1000);
+    pollIntervalRef.current = setInterval(fetchStats, POLL_INTERVAL);
 
     const handleVisibilityChange = () => {
       if (document.visibilityState === "visible") {
@@ -192,6 +259,7 @@ export default function PresenterPage() {
 
     return () => {
       if (pollIntervalRef.current) clearInterval(pollIntervalRef.current);
+      if (displayTimerRef.current) clearTimeout(displayTimerRef.current);
       document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
   }, [fetchStats]);
@@ -206,10 +274,29 @@ export default function PresenterPage() {
   };
 
   const handleReset = async () => {
-    await fetch("/api/presentation", {
+    const res = await fetch("/api/presentation", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ action: "reset" }),
+    });
+    const data = await res.json();
+    serverVersionRef.current = data.version || 0;
+    latestDataRef.current = null;
+    lastDisplayUpdateRef.current = 0;
+    if (displayTimerRef.current) {
+      clearTimeout(displayTimerRef.current);
+      displayTimerRef.current = null;
+    }
+    setStats({
+      participantCount: 0,
+      totalClients: 0,
+      totalOuvertures: 0,
+      totalEngagement: 0,
+      totalPotentielVentes: 0,
+      totalPotentielRevenu: 0,
+      avgCommission: 0,
+      redirectToLogitext: false,
+      isActive: true,
     });
   };
 

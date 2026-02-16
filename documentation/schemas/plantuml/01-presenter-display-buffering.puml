@@ -1,0 +1,78 @@
+@startuml Presenter_Display_Buffering
+
+!theme plain
+skinparam backgroundColor #FEFEFE
+skinparam activityBackgroundColor #FFF8E1
+skinparam activityBorderColor #F9A825
+skinparam activityDiamondBackgroundColor #FFF3E0
+skinparam activityDiamondBorderColor #F57F17
+
+title Presenter Display Buffering Flow
+footer Prevents rapid UI flicker when many participants join simultaneously
+
+start
+
+:Poll server every 3s;
+
+if (Response OK?) then (yes)
+  if (version >= local version?) then (yes)
+    :Store data in latestDataRef;
+
+    if (participantCount < 5?) then (yes)
+      :displayInterval = 3s\n(responsive for early joins);
+    else (no)
+      :displayInterval = 5s\n(readable during mass joins);
+    endif
+
+    if (Enough time since last UI update?) then (yes)
+      :Apply display update immediately;
+      :Cancel any pending timer;
+    else (no)
+      if (Timer already scheduled?) then (yes)
+        :Wait for existing timer;
+      else (no)
+        :Schedule delayed update\n(fires when interval expires);
+      endif
+    endif
+
+    note right
+      When timer fires, it applies
+      the **latest** data from
+      latestDataRef, not stale data.
+    end note
+
+  else (no / stale)
+    :Discard response;
+    note right
+      Out-of-order response.
+      Version is older than
+      what we already processed.
+    end note
+  endif
+
+  :Set status: connected;
+
+else (no)
+  :Set status: reconnecting;
+endif
+
+partition "Apply Display Update" {
+  if (Session active AND prev count > 0?) then (yes)
+    :Monotonic enforcement:\nuse max(new, old) for each stat;
+    note right
+      participantCount,
+      totalClients,
+      totalRevenue, etc.
+      can never decrease
+      during an active session.
+    end note
+  else (no / reset)
+    :Accept all new values directly;
+  endif
+
+  :UI renders with odometer animation;
+}
+
+stop
+
+@enduml

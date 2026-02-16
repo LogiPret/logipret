@@ -22,6 +22,7 @@ interface PresentationState {
   isActive: boolean;
   redirectToLogitext: boolean;
   createdAt: number;
+  version: number;
 }
 
 // Use globalThis to persist state across hot reloads in development
@@ -35,6 +36,7 @@ if (!globalState.presentationState) {
     isActive: true,
     redirectToLogitext: false,
     createdAt: Date.now(),
+    version: 0,
   };
 }
 
@@ -88,6 +90,7 @@ function getStats() {
     redirectToLogitext: state.redirectToLogitext,
     isActive: state.isActive,
     sessionAge: Date.now() - state.createdAt,
+    version: state.version,
   };
 }
 
@@ -127,6 +130,7 @@ export async function POST(request: Request) {
     };
 
     state.participants.set(id, participant);
+    state.version++;
 
     return Response.json({
       success: true,
@@ -143,17 +147,17 @@ export async function POST(request: Request) {
   }
 
   if (action === "redirect") {
-    // Presenter triggers redirect to Logitext
     state.redirectToLogitext = true;
-    return Response.json({ success: true });
+    state.version++;
+    return Response.json({ success: true, version: state.version });
   }
 
   if (action === "reset") {
-    // Reset the presentation - keeps the session but clears participants
     state.participants.clear();
     state.redirectToLogitext = false;
     state.isActive = true;
-    return Response.json({ success: true });
+    state.version++;
+    return Response.json({ success: true, version: state.version });
   }
 
   return Response.json({ error: "Invalid action" }, { status: 400 });

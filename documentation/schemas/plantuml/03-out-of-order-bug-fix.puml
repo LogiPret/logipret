@@ -1,0 +1,67 @@
+@startuml Out_Of_Order_Bug_Fix
+
+!theme plain
+skinparam backgroundColor #FEFEFE
+skinparam sequenceParticipantBackgroundColor #FFF8E1
+skinparam sequenceParticipantBorderColor #F9A825
+skinparam sequenceMessageAlign center
+
+title How Version Check Prevents Count Drops
+footer The count-dropping bug and its fix explained side by side
+
+actor "Presenter" as P
+participant "Server" as S
+
+== THE BUG: Out-of-order responses (BEFORE fix) ==
+
+note over P, S #FFCDD2
+  Polling every 1s. Under load, responses
+  arrive out of order because fetch is async.
+end note
+
+P -> S : Poll A (t=0)
+P -> S : Poll B (t=1)
+
+S --> P : Response B (count=50, arrives first)
+P -> P : Display: **50**
+
+S --> P : Response A (count=48, arrives late!)
+P -> P : Display: **48** -- COUNT DROPS
+
+P -> S : Poll C (t=2)
+S --> P : Response C (count=52)
+P -> P : Display: **52** -- JUMPS BACK UP
+
+note over P #FFCDD2
+  User sees: 50 -> 48 -> 52
+  Looks broken and unreliable.
+end note
+
+== THE FIX: Version check rejects stale data ==
+
+note over P, S #C8E6C9
+  Polling every 3s. Server tracks version counter.
+  Presenter rejects any response with version < current.
+end note
+
+P -> S : Poll A (t=0)
+P -> S : Poll B (t=3)
+
+S --> P : Response B (version=5, count=50)
+P -> P : version 5 >= -1? **Accept**\nDisplay: **50**
+
+S --> P : Response A (version=3, count=48, late!)
+P -> P : version 3 < 5? **REJECT**\nDisplay stays: **50**
+
+note over P #C8E6C9
+  User sees: 50 -> 50 (stable)
+  Next valid poll shows 52 smoothly.
+end note
+
+note over P, S #E8F5E9
+  Additional safety: monotonic enforcement
+  ensures displayed stats never decrease
+  even if server data temporarily fluctuates.
+end note
+
+@enduml

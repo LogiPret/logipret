@@ -1,0 +1,68 @@
+@startuml Version_Based_Ordering
+
+!theme plain
+skinparam backgroundColor #FEFEFE
+skinparam sequenceParticipantBackgroundColor #FFF8E1
+skinparam sequenceParticipantBorderColor #F9A825
+skinparam sequenceLifeLineBorderColor #FDD835
+skinparam sequenceMessageAlign center
+
+title Version-Based Out-of-Order Protection
+footer Server version counter prevents stale data from overwriting fresh data
+
+actor "Presenter Page" as P
+participant "Server\n(In-Memory Map)" as S
+actor "Participant 1" as J1
+actor "Participant 2" as J2
+
+note over S
+  version = 0
+  participants = {}
+end note
+
+== Participant Joins ==
+
+J1 -> S : POST /api/presentation\n{action: join, clients: 100}
+S -> S : version++ (now 1)
+S --> J1 : {participantId, personalStats}
+
+P -> S : GET /api/presentation (poll)
+S --> P : {participantCount: 1, version: 1, ...}
+P -> P : version 1 >= -1? **Accept**, store data
+P -> P : elapsed > 3s? **Apply update**
+
+J2 -> S : POST /api/presentation\n{action: join, clients: 200}
+S -> S : version++ (now 2)
+S --> J2 : {participantId, personalStats}
+
+== Buffered Display Update ==
+
+note over P
+  Next poll at t+3s
+end note
+
+P -> S : GET /api/presentation (poll)
+S --> P : {participantCount: 2, version: 2, ...}
+P -> P : version 2 >= 1? **Accept**, store in buffer
+P -> P : elapsed < 5s? **Schedule timer**
+
+note over P #FFF3E0
+  Timer fires at 5s mark.
+  Apply latestDataRef -> UI updates to count=2
+  Monotonic: max(new, old) for each stat
+end note
+
+== Reset Flow ==
+
+P -> S : POST {action: reset}
+S -> S : Clear all participants\nversion++ (now 3)
+S --> P : {version: 3}
+P -> P : Reset local state to zeros
+P -> P : serverVersionRef = 3
+
+note over P
+  Any response with version < 3
+  arriving after reset is **discarded**.
+end note
+
+@enduml
