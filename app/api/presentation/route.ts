@@ -42,6 +42,18 @@ if (!globalState.presentationState) {
 
 const state = globalState.presentationState;
 
+function logEvent(event: string, data: Record<string, unknown>) {
+  const entry = {
+    tag: "[PRESENTATION]",
+    event,
+    ts: new Date().toISOString(),
+    version: state.version,
+    participants: state.participants.size,
+    ...data,
+  };
+  console.log(JSON.stringify(entry));
+}
+
 const OPEN_RATE = 0.46; // 46%
 const ENGAGEMENT_RATE = 0.14; // 14%
 const SALES_RATE = 0.05; // 5%
@@ -129,8 +141,24 @@ export async function POST(request: Request) {
       timestamp: Date.now(),
     };
 
+    const isUpdate = state.participants.has(id);
     state.participants.set(id, participant);
     state.version++;
+
+    logEvent(isUpdate ? "update" : "join", {
+      participantId: id,
+      clients: clientNum,
+      avgCommission: commissionNum,
+    });
+
+    if (!isUpdate && state.participants.size % 10 === 0) {
+      const s = getStats();
+      logEvent("snapshot", {
+        totalClients: s.totalClients,
+        totalRevenue: s.totalPotentielRevenu,
+        avgCommission: s.avgCommission,
+      });
+    }
 
     return Response.json({
       success: true,
@@ -149,14 +177,21 @@ export async function POST(request: Request) {
   if (action === "redirect") {
     state.redirectToLogitext = true;
     state.version++;
+    const s = getStats();
+    logEvent("redirect", {
+      totalClients: s.totalClients,
+      totalRevenue: s.totalPotentielRevenu,
+    });
     return Response.json({ success: true, version: state.version });
   }
 
   if (action === "reset") {
+    const prevCount = state.participants.size;
     state.participants.clear();
     state.redirectToLogitext = false;
     state.isActive = true;
     state.version++;
+    logEvent("reset", { previousParticipants: prevCount });
     return Response.json({ success: true, version: state.version });
   }
 
