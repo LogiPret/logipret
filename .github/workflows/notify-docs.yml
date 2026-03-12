@@ -1,0 +1,20 @@
+name: Notify Docs Portal
+on:
+  push:
+    branches: [main]
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: peter-evans/repository-dispatch@v3
+        with:
+          token: ${{ secrets.DOCS_DISPATCH_TOKEN }}
+          repository: LogiPret/logipret-docs
+          event-type: repo-updated
+          client-payload: |
+            {
+              "repo": "${{ github.repository }}",
+              "slug": "logipret",
+              "localDir": "logipret"
+            }
